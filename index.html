@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#F7F5F1" />
+    <meta
+      name="description"
+      content="The opening scene of the new Preacherman website."
+    />
+    <title>Preacherman</title>
+    <link rel="preload" href="./assets/character-placeholder.png" as="image" />
+    <link rel="stylesheet" href="./styles.css" />
+    <link rel="icon" href="./assets/preacherman-logo.svg" type="image/svg+xml" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="site-header__inner">
+        <a class="site-brand" href="#" aria-label="Preacherman home">
+          <span class="site-brand__wordmark">PREACHERMAN</span>
+          <img
+            class="site-brand__logo"
+            src="./assets/preacherman-logo.svg"
+            alt=""
+            aria-hidden="true"
+            width="212"
+            height="240"
+          />
+        </a>
+
+        <nav class="site-navigation" aria-label="Primary navigation">
+          <div class="site-navigation__item">
+            <button
+              class="site-navigation__trigger"
+              type="button"
+              aria-expanded="false"
+              aria-controls="menu-product"
+            >
+              PRODUCT
+            </button>
+            <div
+              id="menu-product"
+              class="site-navigation__dropdown"
+              aria-hidden="true"
+              inert
+            >
+              <a href="#">How it works</a>
+              <a href="#">Two minds</a>
+              <a href="#">Memory &amp; state</a>
+            </div>
+          </div>
+
+          <div class="site-navigation__item">
+            <button
+              class="site-navigation__trigger"
+              type="button"
+              aria-expanded="false"
+              aria-controls="menu-characters"
+            >
+              CHARACTERS
+            </button>
+            <div
+              id="menu-characters"
+              class="site-navigation__dropdown"
+              aria-hidden="true"
+              inert
+            >
+              <a href="#">Official characters</a>
+              <a href="#">Stay tuned</a>
+            </div>
+          </div>
+
+          <div class="site-navigation__item">
+            <button
+              class="site-navigation__trigger"
+              type="button"
+              aria-expanded="false"
+              aria-controls="menu-marketplace"
+            >
+              MARKETPLACE
+            </button>
+            <div
+              id="menu-marketplace"
+              class="site-navigation__dropdown site-navigation__dropdown--marketplace"
+              aria-hidden="true"
+              inert
+            >
+              <a href="#">Characters</a>
+              <a href="#">Motion packs</a>
+              <a href="#">Appearance packs</a>
+              <a href="#">New releases</a>
+              <a href="#">Featured creators</a>
+            </div>
+          </div>
+
+          <div class="site-navigation__item site-navigation__item--trust">
+            <button
+              class="site-navigation__trigger"
+              type="button"
+              aria-expanded="false"
+              aria-controls="menu-trust"
+            >
+              TRUST
+            </button>
+            <div
+              id="menu-trust"
+              class="site-navigation__dropdown site-navigation__dropdown--trust"
+              aria-hidden="true"
+              inert
+            >
+              <a href="#">Asset provenance</a>
+              <a href="#">Licensing</a>
+              <a href="#">Permissions</a>
+              <a href="#">Data &amp; memory</a>
+              <a href="#">Generated content</a>
+              <a href="#">Audit &amp; disputes</a>
+            </div>
+          </div>
+        </nav>
+
+        <button
+          class="mobile-navigation__toggle"
+          type="button"
+          aria-expanded="false"
+          aria-controls="mobile-navigation"
+        >
+          <span class="mobile-navigation__toggle-label">MENU</span>
+        </button>
+      </div>
+
+      <nav
+        id="mobile-navigation"
+        class="mobile-navigation"
+        aria-label="Mobile navigation"
+        aria-hidden="true"
+        inert
+      >
+        <div class="mobile-navigation__inner">
+          <div class="mobile-navigation__item">
+            <button
+              class="mobile-navigation__trigger"
+              type="button"
+              aria-expanded="false"
+              aria-controls="mobile-menu-product"
+            >
+              PRODUCT
+            </button>
+            <div id="mobile-menu-product" class="mobile-navigation__panel" hidden>
+              <a href="#">How it works</a>
+              <a href="#">Two minds</a>
+              <a href="#">Memory &amp; state</a>
+            </div>
+          </div>
+
+          <div class="mobile-navigation__item">
+            <button
+              class="mobile-navigation__trigger"
+              type="button"
+              aria-expanded="false"
+              aria-controls="mobile-menu-characters"
+            >
+              CHARACTERS
+            </button>
+            <div id="mobile-menu-characters" class="mobile-navigation__panel" hidden>
+              <a href="#">Official characters</a>
+              <a href="#">Stay tuned</a>
+            </div>
+          </div>
+
+          <div class="mobile-navigation__item">
+            <button
+              class="mobile-navigation__trigger"
+              type="button"
+              aria-expanded="false"
+              aria-controls="mobile-menu-marketplace"
+            >
+              MARKETPLACE
+            </button>
+            <div id="mobile-menu-marketplace" class="mobile-navigation__panel" hidden>
+              <a href="#">Characters</a>
+              <a href="#">Motion packs</a>
+              <a href="#">Appearance packs</a>
+              <a href="#">New releases</a>
+              <a href="#">Featured creators</a>
+            </div>
+          </div>
+
+          <div class="mobile-navigation__item">
+            <button
+              class="mobile-navigation__trigger"
+              type="button"
+              aria-expanded="false"
+              aria-controls="mobile-menu-trust"
+            >
+              TRUST
+            </button>
+            <div id="mobile-menu-trust" class="mobile-navigation__panel" hidden>
+              <a href="#">Asset provenance</a>
+              <a href="#">Licensing</a>
+              <a href="#">Permissions</a>
+              <a href="#">Data &amp; memory</a>
+              <a href="#">Generated content</a>
+              <a href="#">Audit &amp; disputes</a>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="site-main">
+      <section
+        class="character-system"
+        aria-labelledby="character-opening-title"
+      >
+        <div class="character-system__stage">
+          <div class="character-system__visual">
+            <div class="character-system__figure-field"></div>
+            <img
+              class="character-system__image"
+              src="./assets/character-placeholder.png"
+              alt="Preacherman virtual character concept"
+              width="296"
+              height="671"
+            />
+            <canvas
+              class="character-system__canvas"
+              role="img"
+              aria-label="Animated Cortana character"
+              width="592"
+              height="1342"
+            ></canvas>
+          </div>
+
+          <div class="two-minds-scene" aria-hidden="true">
+            <svg
+              class="two-minds-task-ring-layer"
+              viewBox="0 0 1000 1000"
+              preserveAspectRatio="none"
+              focusable="false"
+            >
+              <path
+                class="two-minds-task-ring"
+                pathLength="1000"
+                d="M 640 530 C 540 515, 445 405, 350 405 C 245 405, 195 515, 215 625 C 230 740, 315 755, 410 700 C 500 650, 565 565, 640 530 C 720 500, 775 500, 835 510 C 920 520, 950 610, 900 675 C 855 735, 840 675, 800 610 C 780 578, 740 545, 640 530"
+              />
+              <g class="two-minds-task-trail"></g>
+            </svg>
+            <span class="two-minds-task-signal"></span>
+          </div>
+
+          <div class="character-opening__copy">
+            <h1
+              id="character-opening-title"
+              class="character-opening__headline"
+            >
+              A character should be more than an image.
+            </h1>
+
+            <div class="character-opening__closing">
+              <p class="character-opening__closing-line character-opening__closing-line--move">
+                Built to move.
+              </p>
+              <p class="character-opening__closing-line character-opening__closing-line--respond">
+                Built to respond.
+              </p>
+              <p class="character-opening__closing-line character-opening__closing-line--remain">
+                Built to remain.
+              </p>
+            </div>
+          </div>
+
+          <div class="two-minds" aria-labelledby="two-minds-speak-title">
+            <h2
+              id="two-minds-speak-title"
+              class="two-minds__title two-minds__title--speak"
+            >
+              One mind to speak.
+            </h2>
+
+            <div class="two-minds__exchange two-minds__exchange--speak">
+              <p class="two-minds__annotation">A / SPEAK</p>
+              <p class="two-minds__message two-minds__message--speak-request">
+                What did we decide yesterday?
+              </p>
+              <p class="two-minds__message two-minds__message--speak-response">
+                We decided to simplify the opening.
+              </p>
+            </div>
+
+            <h2 class="two-minds__title two-minds__title--act">
+              Another to act.
+            </h2>
+
+            <div class="two-minds__exchange two-minds__exchange--act">
+              <p class="two-minds__annotation">B / ACT</p>
+              <p class="two-minds__message two-minds__message--act-request">
+                Update the opening headline.
+              </p>
+              <p class="two-minds__message two-minds__message--act-result">
+                Updated and verified.
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <div class="future-narrative-space" aria-hidden="true"></div>
+    </main>
+
+    <!-- TODO: connect navigation links to future site routes -->
+    <script src="./assets/three.min.js"></script>
+    <script src="./assets/GLTFLoader.js"></script>
+    <script src="./character-3d.js"></script>
+    <script src="./script.js"></script>
+  </body>
+</html>
