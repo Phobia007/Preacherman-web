@@ -6,48 +6,43 @@
     <meta name="theme-color" content="#F7F5F1" />
     <meta
       name="description"
+      data-i18n-content="metaDescription"
       content="The opening scene of the new Preacherman website."
     />
     <title>Preacherman</title>
-    <link rel="preload" href="./assets/character-placeholder.png" as="image" />
-    <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="./styles.css?v=20260808-84" />
     <link rel="icon" href="./assets/preacherman-logo.svg" type="image/svg+xml" />
   </head>
   <body>
     <header class="site-header">
       <div class="site-header__inner">
-        <a class="site-brand" href="#" aria-label="Preacherman home">
-          <span class="site-brand__wordmark">PREACHERMAN</span>
+        <a
+          class="site-brand"
+          href="#"
+          aria-label="Preacherman home"
+          data-i18n-aria-label="brandHome"
+        >
           <img
-            class="site-brand__logo"
-            src="./assets/preacherman-logo.svg"
+            class="site-brand__mark"
+            src="./assets/preacherman-footer-logo.svg"
             alt=""
             aria-hidden="true"
             width="212"
             height="240"
           />
+          <span class="site-brand__wordmark">Preacherman</span>
         </a>
 
-        <nav class="site-navigation" aria-label="Primary navigation">
+        <nav
+          id="desktop-navigation-menu"
+          class="site-navigation"
+          aria-label="Primary navigation"
+          data-i18n-aria-label="primaryNavigation"
+          aria-hidden="true"
+          inert
+        >
           <div class="site-navigation__item">
-            <button
-              class="site-navigation__trigger"
-              type="button"
-              aria-expanded="false"
-              aria-controls="menu-product"
-            >
-              PRODUCT
-            </button>
-            <div
-              id="menu-product"
-              class="site-navigation__dropdown"
-              aria-hidden="true"
-              inert
-            >
-              <a href="#">How it works</a>
-              <a href="#">Two minds</a>
-              <a href="#">Memory &amp; state</a>
-            </div>
+            <a class="site-navigation__link" href="#" data-i18n="product">PRODUCT</a>
           </div>
 
           <div class="site-navigation__item">
@@ -55,18 +50,20 @@
               class="site-navigation__trigger"
               type="button"
               aria-expanded="false"
-              aria-controls="menu-characters"
+              aria-controls="menu-avatar"
             >
-              CHARACTERS
+              <span data-i18n="avatar">AVATAR</span>
             </button>
             <div
-              id="menu-characters"
+              id="menu-avatar"
               class="site-navigation__dropdown"
               aria-hidden="true"
               inert
             >
-              <a href="#">Official characters</a>
-              <a href="#">Stay tuned</a>
+              <a href="#" data-i18n="propertyList">Property list</a>
+              <a href="#" data-i18n="gallery">Gallery</a>
+              <a href="#" data-i18n="personalization">Personalization</a>
+              <a href="#" data-i18n="memory">Memory</a>
             </div>
           </div>
 
@@ -77,7 +74,7 @@
               aria-expanded="false"
               aria-controls="menu-marketplace"
             >
-              MARKETPLACE
+              <span data-i18n="marketplace">MARKETPLACE</span>
             </button>
             <div
               id="menu-marketplace"
@@ -85,38 +82,100 @@
               aria-hidden="true"
               inert
             >
-              <a href="#">Characters</a>
-              <a href="#">Motion packs</a>
-              <a href="#">Appearance packs</a>
-              <a href="#">New releases</a>
-              <a href="#">Featured creators</a>
+              <a href="#" data-i18n="characters">Characters</a>
+              <a href="#" data-i18n="motionPacks">Motion packs</a>
+              <a href="#" data-i18n="appearancePacks">Appearance packs</a>
+              <a href="#" data-i18n="newReleases">New releases</a>
+              <a href="#" data-i18n="featuredCreators">Featured creators</a>
             </div>
           </div>
 
-          <div class="site-navigation__item site-navigation__item--trust">
+          <div class="site-navigation__item site-navigation__item--adapters">
             <button
               class="site-navigation__trigger"
               type="button"
               aria-expanded="false"
-              aria-controls="menu-trust"
+              aria-controls="menu-adapters"
             >
-              TRUST
+              <span data-i18n="adapters">ADAPTERS</span>
             </button>
             <div
-              id="menu-trust"
-              class="site-navigation__dropdown site-navigation__dropdown--trust"
+              id="menu-adapters"
+              class="site-navigation__dropdown site-navigation__dropdown--adapters"
               aria-hidden="true"
               inert
             >
-              <a href="#">Asset provenance</a>
-              <a href="#">Licensing</a>
-              <a href="#">Permissions</a>
-              <a href="#">Data &amp; memory</a>
-              <a href="#">Generated content</a>
-              <a href="#">Audit &amp; disputes</a>
+              <a href="#" data-i18n="apiList">API list</a>
+              <a href="#" data-i18n="mcpList">MCP list</a>
+              <a href="#" data-i18n="cliList">CLI list</a>
+              <a href="#" data-i18n="subscribeList">Subscribe list</a>
+            </div>
+          </div>
+
+          <div class="site-navigation__item site-navigation__item--language">
+            <div class="site-language">
+              <button
+                class="site-navigation__trigger site-utility-button--language"
+                type="button"
+                aria-label="Current language: English"
+                aria-haspopup="true"
+              >
+                <span data-i18n="language">Language</span>
+              </button>
+              <div
+                class="site-language__menu"
+                aria-label="Language options"
+                data-i18n-aria-label="languageOptions"
+              >
+                <button
+                  class="site-language__option"
+                  type="button"
+                  lang="en"
+                  data-language="en"
+                >
+                  English
+                </button>
+                <button
+                  class="site-language__option"
+                  type="button"
+                  lang="zh-CN"
+                  data-language="zh"
+                >
+                  Chinese
+                </button>
+              </div>
             </div>
           </div>
         </nav>
+
+        <div
+          class="site-header__utilities"
+          aria-label="Account and menu"
+          data-i18n-aria-label="accountAndMenu"
+        >
+          <button
+            class="site-utility-button site-utility-button--login"
+            type="button"
+            aria-label="Log in"
+            data-i18n-aria-label="logIn"
+            aria-expanded="false"
+            aria-controls="site-login-panel"
+            aria-haspopup="dialog"
+          >
+            <img src="./assets/user-thin.svg" alt="" aria-hidden="true" />
+          </button>
+
+          <button
+            class="site-menu-toggle"
+            type="button"
+            aria-expanded="false"
+            aria-controls="navigation-workspace"
+            aria-haspopup="dialog"
+          >
+            <img class="site-menu-toggle__icon" src="./assets/menu.svg" alt="" aria-hidden="true" />
+            <span data-i18n="menuOpen">MENU</span>
+          </button>
+        </div>
 
         <button
           class="mobile-navigation__toggle"
@@ -124,7 +183,7 @@
           aria-expanded="false"
           aria-controls="mobile-navigation"
         >
-          <span class="mobile-navigation__toggle-label">MENU</span>
+          <span class="mobile-navigation__toggle-label" data-i18n="menuOpen">MENU</span>
         </button>
       </div>
 
@@ -132,24 +191,13 @@
         id="mobile-navigation"
         class="mobile-navigation"
         aria-label="Mobile navigation"
+        data-i18n-aria-label="mobileNavigation"
         aria-hidden="true"
         inert
       >
         <div class="mobile-navigation__inner">
           <div class="mobile-navigation__item">
-            <button
-              class="mobile-navigation__trigger"
-              type="button"
-              aria-expanded="false"
-              aria-controls="mobile-menu-product"
-            >
-              PRODUCT
-            </button>
-            <div id="mobile-menu-product" class="mobile-navigation__panel" hidden>
-              <a href="#">How it works</a>
-              <a href="#">Two minds</a>
-              <a href="#">Memory &amp; state</a>
-            </div>
+            <a class="mobile-navigation__link" href="#" data-i18n="product">PRODUCT</a>
           </div>
 
           <div class="mobile-navigation__item">
@@ -157,13 +205,15 @@
               class="mobile-navigation__trigger"
               type="button"
               aria-expanded="false"
-              aria-controls="mobile-menu-characters"
+              aria-controls="mobile-menu-avatar"
             >
-              CHARACTERS
+              <span data-i18n="avatar">AVATAR</span>
             </button>
-            <div id="mobile-menu-characters" class="mobile-navigation__panel" hidden>
-              <a href="#">Official characters</a>
-              <a href="#">Stay tuned</a>
+            <div id="mobile-menu-avatar" class="mobile-navigation__panel" hidden>
+              <a href="#" data-i18n="propertyList">Property list</a>
+              <a href="#" data-i18n="gallery">Gallery</a>
+              <a href="#" data-i18n="personalization">Personalization</a>
+              <a href="#" data-i18n="memory">Memory</a>
             </div>
           </div>
 
@@ -174,14 +224,14 @@
               aria-expanded="false"
               aria-controls="mobile-menu-marketplace"
             >
-              MARKETPLACE
+              <span data-i18n="marketplace">MARKETPLACE</span>
             </button>
             <div id="mobile-menu-marketplace" class="mobile-navigation__panel" hidden>
-              <a href="#">Characters</a>
-              <a href="#">Motion packs</a>
-              <a href="#">Appearance packs</a>
-              <a href="#">New releases</a>
-              <a href="#">Featured creators</a>
+              <a href="#" data-i18n="characters">Characters</a>
+              <a href="#" data-i18n="motionPacks">Motion packs</a>
+              <a href="#" data-i18n="appearancePacks">Appearance packs</a>
+              <a href="#" data-i18n="newReleases">New releases</a>
+              <a href="#" data-i18n="featuredCreators">Featured creators</a>
             </div>
           </div>
 
@@ -190,128 +240,520 @@
               class="mobile-navigation__trigger"
               type="button"
               aria-expanded="false"
-              aria-controls="mobile-menu-trust"
+              aria-controls="mobile-menu-adapters"
             >
-              TRUST
+              <span data-i18n="adapters">ADAPTERS</span>
             </button>
-            <div id="mobile-menu-trust" class="mobile-navigation__panel" hidden>
-              <a href="#">Asset provenance</a>
-              <a href="#">Licensing</a>
-              <a href="#">Permissions</a>
-              <a href="#">Data &amp; memory</a>
-              <a href="#">Generated content</a>
-              <a href="#">Audit &amp; disputes</a>
+            <div id="mobile-menu-adapters" class="mobile-navigation__panel" hidden>
+              <a href="#" data-i18n="apiList">API list</a>
+              <a href="#" data-i18n="mcpList">MCP list</a>
+              <a href="#" data-i18n="cliList">CLI list</a>
+              <a href="#" data-i18n="subscribeList">Subscribe list</a>
+            </div>
+          </div>
+
+          <div
+            class="mobile-navigation__utilities"
+            aria-label="Language and account"
+            data-i18n-aria-label="languageAndAccount"
+          >
+            <button
+              class="site-utility-button site-utility-button--login"
+              type="button"
+              aria-label="Log in"
+              data-i18n-aria-label="logIn"
+              aria-expanded="false"
+              aria-controls="site-login-panel"
+              aria-haspopup="dialog"
+            >
+              <img src="./assets/user-thin.svg" alt="" aria-hidden="true" />
+            </button>
+            <div class="site-language">
+              <button
+                class="site-utility-button site-utility-button--language"
+                type="button"
+                aria-label="Current language: English"
+                aria-haspopup="true"
+              >
+                <span data-i18n="language">Language</span>
+              </button>
+              <div
+                class="site-language__menu"
+                aria-label="Language options"
+                data-i18n-aria-label="languageOptions"
+              >
+                <button
+                  class="site-language__option"
+                  type="button"
+                  lang="en"
+                  data-language="en"
+                >
+                  English
+                </button>
+                <button
+                  class="site-language__option"
+                  type="button"
+                  lang="zh-CN"
+                  data-language="zh"
+                >
+                  Chinese
+                </button>
+              </div>
             </div>
           </div>
         </div>
       </nav>
+
+      <div
+        id="site-login-panel"
+        class="site-login-panel"
+        role="dialog"
+        aria-label="Sign in"
+        data-i18n-aria-label="signInDialog"
+        aria-hidden="true"
+        inert
+      >
+        <form class="login-form" novalidate>
+          <div class="login-form__field">
+            <label for="login-email" data-i18n="email">Email</label>
+            <div class="login-form__input-shell">
+              <i class="login-form__input-icon" data-lucide="at-sign" aria-hidden="true"></i>
+              <input
+                id="login-email"
+                class="login-form__input"
+                name="email"
+                type="email"
+                autocomplete="email"
+                placeholder="Enter your Email"
+                data-i18n-placeholder="emailPlaceholder"
+                required
+              />
+            </div>
+          </div>
+
+          <div class="login-form__field">
+            <label for="login-password" data-i18n="password">Password</label>
+            <div class="login-form__input-shell">
+              <i
+                class="login-form__input-icon"
+                data-lucide="lock-keyhole"
+                aria-hidden="true"
+              ></i>
+              <input
+                id="login-password"
+                class="login-form__input"
+                name="password"
+                type="password"
+                autocomplete="current-password"
+                placeholder="Enter your Password"
+                data-i18n-placeholder="passwordPlaceholder"
+                required
+              />
+              <button
+                class="login-form__visibility"
+                type="button"
+                aria-label="Show password"
+              >
+                <i data-login-icon="show" data-lucide="eye" aria-hidden="true"></i>
+                <i
+                  data-login-icon="hide"
+                  data-lucide="eye-off"
+                  aria-hidden="true"
+                  hidden
+                ></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="login-form__options">
+            <label class="login-form__remember">
+              <input type="checkbox" name="remember" />
+              <span data-i18n="rememberMe">Remember me</span>
+            </label>
+            <button class="login-form__text-action" type="button" data-i18n="forgotPassword">
+              Forgot password?
+            </button>
+          </div>
+
+          <button class="login-form__submit" type="submit" data-i18n="signIn">
+            Sign In
+          </button>
+
+          <p class="login-form__prompt">
+            <span data-i18n="noAccount">Don't have an account?</span>
+            <button class="login-form__text-action" type="button" data-i18n="signUp">
+              Sign Up
+            </button>
+          </p>
+
+          <p class="login-form__divider" data-i18n="orWith">Or With</p>
+
+          <div class="login-form__socials">
+            <button class="login-form__social" type="button">
+              <img src="./assets/google-line.svg" alt="" aria-hidden="true" />
+              <span>Google</span>
+            </button>
+          </div>
+        </form>
+      </div>
     </header>
 
-    <main class="site-main">
-      <section
-        class="character-system"
-        aria-labelledby="character-opening-title"
+    <section
+      id="navigation-workspace"
+      class="navigation-workspace"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Navigation workspace"
+      data-i18n-aria-label="navigationWorkspace"
+      aria-hidden="true"
+      inert
+    >
+      <div class="navigation-workspace__main-rail">
+        <div class="navigation-workspace__heading">
+          <button
+            class="navigation-workspace__root-close"
+            type="button"
+            aria-label="Close navigation workspace"
+            data-i18n-aria-label="closeNavigationWorkspace"
+          >
+            <img src="./assets/arrow-left.svg" alt="" aria-hidden="true" />
+          </button>
+          <p class="navigation-workspace__main-title" data-i18n="menuOpen">MENU</p>
+        </div>
+
+        <nav
+          class="navigation-workspace__main-menu"
+          aria-label="Main sections"
+          data-i18n-aria-label="mainSections"
+        >
+          <button
+            class="navigation-workspace__main-item"
+            type="button"
+            data-workspace-section="avatar"
+            style="--workspace-main-index: 0; --workspace-main-open-delay: 900ms; --workspace-main-close-delay: 135ms"
+          >
+            <span data-i18n="avatar">AVATAR</span>
+          </button>
+          <button
+            class="navigation-workspace__main-item"
+            type="button"
+            data-workspace-section="marketplace"
+            style="--workspace-main-index: 1; --workspace-main-open-delay: 1000ms; --workspace-main-close-delay: 90ms"
+          >
+            <span data-i18n="marketplace">MARKETPLACE</span>
+          </button>
+          <button
+            class="navigation-workspace__main-item"
+            type="button"
+            data-workspace-section="adapters"
+            style="--workspace-main-index: 2; --workspace-main-open-delay: 1100ms; --workspace-main-close-delay: 45ms"
+          >
+            <span data-i18n="adapters">ADAPTERS</span>
+          </button>
+          <button
+            class="navigation-workspace__main-item"
+            type="button"
+            data-workspace-section="language"
+            style="--workspace-main-index: 3; --workspace-main-open-delay: 1200ms; --workspace-main-close-delay: 0ms"
+          >
+            <span data-i18n="language">LANGUAGE</span>
+          </button>
+        </nav>
+      </div>
+
+      <div class="navigation-workspace__rail">
+        <div class="navigation-workspace__heading">
+          <button
+            class="navigation-workspace__close"
+            type="button"
+            aria-label="Back to main navigation"
+            data-i18n-aria-label="backToMainNavigation"
+          >
+            <img src="./assets/arrow-left.svg" alt="" aria-hidden="true" />
+          </button>
+          <p class="navigation-workspace__title"></p>
+        </div>
+        <nav
+          class="navigation-workspace__menu"
+          aria-label="Section navigation"
+          data-i18n-aria-label="sectionNavigation"
+        ></nav>
+      </div>
+
+      <div
+        class="navigation-workspace__content"
+        aria-label="Content area"
+        data-i18n-aria-label="workspaceContent"
       >
-        <div class="character-system__stage">
-          <div class="character-system__visual">
-            <div class="character-system__figure-field"></div>
-            <img
-              class="character-system__image"
-              src="./assets/character-placeholder.png"
-              alt="Preacherman virtual character concept"
-              width="296"
-              height="671"
-            />
-            <canvas
-              class="character-system__canvas"
-              role="img"
-              aria-label="Animated Cortana character"
-              width="592"
-              height="1342"
-            ></canvas>
-          </div>
+        <div class="navigation-workspace__login-gate" aria-live="polite">
+          <img
+            class="navigation-workspace__login-icon"
+            src="./assets/attention-circle-thin.svg"
+            alt=""
+            aria-hidden="true"
+          />
+          <p class="navigation-workspace__login-copy">
+            <button
+              class="navigation-workspace__login-link"
+              type="button"
+              aria-controls="site-login-panel"
+              aria-expanded="false"
+              data-i18n="loginGateAction"
+            >Log in</button><span data-i18n="loginGateSuffix"> to see more.</span>
+          </p>
+        </div>
+      </div>
 
-          <div class="two-minds-scene" aria-hidden="true">
-            <svg
-              class="two-minds-task-ring-layer"
-              viewBox="0 0 1000 1000"
-              preserveAspectRatio="none"
-              focusable="false"
-            >
-              <path
-                class="two-minds-task-ring"
-                pathLength="1000"
-                d="M 640 530 C 540 515, 445 405, 350 405 C 245 405, 195 515, 215 625 C 230 740, 315 755, 410 700 C 500 650, 565 565, 640 530 C 720 500, 775 500, 835 510 C 920 520, 950 610, 900 675 C 855 735, 840 675, 800 610 C 780 578, 740 545, 640 530"
-              />
-              <g class="two-minds-task-trail"></g>
-            </svg>
-            <span class="two-minds-task-signal"></span>
-          </div>
+      <div class="navigation-workspace__backdrop"></div>
+    </section>
 
-          <div class="character-opening__copy">
-            <h1
-              id="character-opening-title"
-              class="character-opening__headline"
-            >
-              A character should be more than an image.
-            </h1>
+    <main class="site-content">
+      <section class="hero" aria-labelledby="hero-title">
+        <h1 id="hero-title" class="hero__title">
+          <span class="hero__tagline" data-i18n="tagline">
+            A Much Easier Intelligence.
+          </span>
+        </h1>
+        <a
+          class="hero__journey"
+          href="./start-your-journey.html"
+          data-i18n="startJourney"
+        >Start Your Journey</a>
+      </section>
 
-            <div class="character-opening__closing">
-              <p class="character-opening__closing-line character-opening__closing-line--move">
-                Built to move.
-              </p>
-              <p class="character-opening__closing-line character-opening__closing-line--respond">
-                Built to respond.
-              </p>
-              <p class="character-opening__closing-line character-opening__closing-line--remain">
-                Built to remain.
-              </p>
-            </div>
-          </div>
+      <section class="update-section" aria-labelledby="update-section-title">
+        <div class="update-section__intro">
+          <h2
+            id="update-section-title"
+            class="update-section__title"
+            data-i18n="newUpdate"
+          >
+            New Update
+          </h2>
+        </div>
 
-          <div class="two-minds" aria-labelledby="two-minds-speak-title">
-            <h2
-              id="two-minds-speak-title"
-              class="two-minds__title two-minds__title--speak"
-            >
-              One mind to speak.
-            </h2>
+        <div class="update-section__card" aria-hidden="true"></div>
+      </section>
 
-            <div class="two-minds__exchange two-minds__exchange--speak">
-              <p class="two-minds__annotation">A / SPEAK</p>
-              <p class="two-minds__message two-minds__message--speak-request">
-                What did we decide yesterday?
-              </p>
-              <p class="two-minds__message two-minds__message--speak-response">
-                We decided to simplify the opening.
-              </p>
-            </div>
+      <section class="interaction-section" aria-labelledby="interaction-section-title">
+        <div
+          class="interaction-section__card"
+          role="img"
+          aria-label="Interaction style showcase"
+          data-i18n-aria-label="interactionShowcase"
+        ></div>
 
-            <h2 class="two-minds__title two-minds__title--act">
-              Another to act.
-            </h2>
-
-            <div class="two-minds__exchange two-minds__exchange--act">
-              <p class="two-minds__annotation">B / ACT</p>
-              <p class="two-minds__message two-minds__message--act-request">
-                Update the opening headline.
-              </p>
-              <p class="two-minds__message two-minds__message--act-result">
-                Updated and verified.
-              </p>
-            </div>
-          </div>
-
+        <div class="interaction-section__intro">
+          <h2
+            id="interaction-section-title"
+            class="interaction-section__title"
+            data-i18n="newInteractionStyle"
+          >
+            Brand New Interaction Style
+          </h2>
         </div>
       </section>
 
-      <div class="future-narrative-space" aria-hidden="true"></div>
+      <section
+        class="update-section completion-section"
+        aria-labelledby="completion-section-title"
+      >
+        <div class="update-section__intro">
+          <h2
+            id="completion-section-title"
+            class="update-section__title"
+            data-i18n="stateEngineDecoupled"
+          >
+            State&amp;engine decoupled
+          </h2>
+        </div>
+
+        <div
+          class="update-section__card completion-section__card"
+          role="img"
+          aria-label="Task completion showcase"
+          data-i18n-aria-label="completionShowcase"
+        ></div>
+      </section>
+
+      <section
+        class="interaction-section ownership-section"
+        aria-labelledby="ownership-section-title"
+      >
+        <div
+          class="interaction-section__card ownership-section__card"
+          role="img"
+          aria-label="Digital property showcase"
+          data-i18n-aria-label="propertyShowcase"
+        ></div>
+
+        <div class="interaction-section__intro">
+          <h2
+            id="ownership-section-title"
+            class="interaction-section__title"
+            data-i18n="ownProperty"
+          >
+            Own Your Things as Property
+          </h2>
+        </div>
+      </section>
+
+      <section
+        class="update-section adaptability-section"
+        aria-labelledby="adaptability-section-title"
+      >
+        <div class="update-section__intro">
+          <h2
+            id="adaptability-section-title"
+            class="update-section__title"
+            data-i18n="highlyAdaptable"
+          >
+            Highly Adaptable
+          </h2>
+        </div>
+
+        <div
+          class="update-section__card adaptability-section__card"
+          role="img"
+          aria-label="Adaptability showcase"
+          data-i18n-aria-label="adaptabilityShowcase"
+        ></div>
+      </section>
+
+      <section class="statement-section" aria-labelledby="statement-section-title">
+        <div class="statement-section__content">
+          <h2
+            id="statement-section-title"
+            class="statement-section__title"
+            aria-label="Find and Build a Second You Here."
+            data-i18n-aria-label="statement"
+            data-i18n-stagger="statementWords"
+          >
+            <span class="statement-section__word" style="--word-index: 0" aria-hidden="true">Find</span>
+            <span class="statement-section__word" style="--word-index: 1" aria-hidden="true">and</span>
+            <span class="statement-section__word" style="--word-index: 2" aria-hidden="true">Build</span>
+            <br class="statement-section__line-break" aria-hidden="true" />
+            <span class="statement-section__word" style="--word-index: 3" aria-hidden="true">a</span>
+            <span class="statement-section__word" style="--word-index: 4" aria-hidden="true">Second</span>
+            <span class="statement-section__word" style="--word-index: 5" aria-hidden="true">You</span>
+            <span class="statement-section__word" style="--word-index: 6" aria-hidden="true">Here.</span>
+          </h2>
+
+          <div
+            class="hero__actions statement-section__actions"
+            aria-label="Download options"
+            data-i18n-aria-label="downloadOptions"
+          >
+            <button
+              class="hero__platform-button hero__platform-button--icon"
+              type="button"
+              aria-label="Download Windows"
+              data-i18n-aria-label="tryWindows"
+            >
+              <span class="hero__platform-label">Windows</span>
+              <img
+                class="hero__platform-icon"
+                src="./assets/download.svg"
+                alt=""
+                aria-hidden="true"
+                width="24"
+                height="24"
+              />
+            </button>
+            <div class="hero__platform-download hero__platform-download--macos">
+              <button
+                class="hero__platform-button hero__platform-button--icon hero__platform-menu-trigger"
+                type="button"
+                aria-label="Download macOS"
+                data-i18n-aria-label="tryMacOS"
+                aria-haspopup="menu"
+                aria-expanded="false"
+                aria-controls="hero-macos-download-menu"
+              >
+                <span class="hero__platform-label">macOS</span>
+                <img
+                  class="hero__platform-icon"
+                  src="./assets/download.svg"
+                  alt=""
+                  aria-hidden="true"
+                  width="24"
+                  height="24"
+                />
+              </button>
+
+              <div
+                id="hero-macos-download-menu"
+                class="hero__platform-menu"
+                role="menu"
+                aria-label="macOS download options"
+                data-i18n-aria-label="macDownloadOptions"
+                aria-hidden="true"
+                inert
+              >
+                <button
+                  class="hero__platform-option"
+                  type="button"
+                  role="menuitem"
+                  aria-label="Download for Apple Silicon"
+                  data-i18n-aria-label="downloadAppleSilicon"
+                >
+                  <span>Apple Silicon</span>
+                  <img src="./assets/download.svg" alt="" aria-hidden="true" />
+                </button>
+                <button
+                  class="hero__platform-option"
+                  type="button"
+                  role="menuitem"
+                  aria-label="Download for Intel Mac"
+                  data-i18n-aria-label="downloadIntelMac"
+                >
+                  <span>Intel Mac</span>
+                  <img src="./assets/download.svg" alt="" aria-hidden="true" />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
 
+    <footer class="site-footer">
+      <div class="site-footer__main">
+        <div class="site-footer__identity">
+          <div class="site-footer__brand">
+            <img
+              class="site-footer__brand-logo"
+              src="./assets/preacherman-footer-logo.svg"
+              alt=""
+            />
+            <span class="site-footer__brand-name" data-i18n="footerBrand">PREACHERMAN</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="site-footer__closing">
+        <p class="site-footer__copyright" data-i18n="copyright">
+          © 2026 Preacherman. All rights reserved.
+        </p>
+
+        <nav
+          class="site-footer__legal"
+          aria-label="Legal"
+          data-i18n-aria-label="legal"
+        >
+          <a href="#" data-i18n="privacy">Privacy</a>
+          <span aria-hidden="true">·</span>
+          <a href="#" data-i18n="terms">Terms</a>
+          <span aria-hidden="true">·</span>
+          <a href="#" data-i18n="creatorTerms">Creator terms</a>
+          <span aria-hidden="true">·</span>
+          <a href="#" data-i18n="marketplaceRules">Marketplace rules</a>
+        </nav>
+      </div>
+    </footer>
+
     <!-- TODO: connect navigation links to future site routes -->
-    <script src="./assets/three.min.js"></script>
-    <script src="./assets/GLTFLoader.js"></script>
-    <script src="./character-3d.js"></script>
-    <script src="./script.js"></script>
+    <script src="./assets/lucide.min.js"></script>
+    <script src="./script.js?v=20260808-81"></script>
   </body>
 </html>
