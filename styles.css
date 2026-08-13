@@ -190,8 +190,9 @@ body {
 
 .hero__title {
   position: absolute;
-  top: calc(6.5rem + clamp(1.25rem, 2.8vh, 2rem));
+  top: auto;
   right: var(--page-gutter);
+  bottom: clamp(0.55rem, 1.35vh, 0.9rem);
   left: var(--page-gutter);
   width: auto;
   margin: 0;
@@ -204,19 +205,46 @@ body {
 }
 
 .hero__name {
-  --hero-seam-half-width: 0.15em;
-  --hero-seam-width: 0.86em;
-  --hero-seam-extra-height: 1.05em;
-  position: relative;
+  position: absolute;
+  z-index: 1;
+  top: 47%;
+  left: 0;
   width: 100vw;
-  height: 0.96em;
-  margin-inline: calc(50% - 50vw);
-  overflow: visible;
-  font-size: clamp(2rem, 4.9vw, 5.25rem);
-  line-height: 0.9;
-  letter-spacing: 0.055em;
+  height: clamp(12rem, 21vw, 15rem);
+  overflow: hidden;
+  font-family: "Bodoni Moda", "Libre Baskerville", Georgia, serif;
+  font-size: clamp(3.4rem, 7vw, 6.8rem);
+  font-optical-sizing: auto;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 0.045em;
   white-space: nowrap;
-  transform: translateY(calc(-1 * clamp(4.5rem, 10vh, 5.75rem)));
+  transform: translateY(-50%);
+}
+
+.hero__name::after {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: clamp(7rem, 16.5vw, 13.25rem);
+  background: var(--page-bg);
+  content: "";
+  pointer-events: none;
+  transform: translateX(-50%);
+}
+
+.hero__center-logo {
+  position: absolute;
+  z-index: 4;
+  top: 47%;
+  left: 50%;
+  display: block;
+  width: clamp(7rem, 16.5vw, 13.25rem);
+  height: auto;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
 }
 
 .hero__marquee,
@@ -230,33 +258,35 @@ body {
 }
 
 .hero__marquee-panel--original {
-  -webkit-clip-path: polygon(
-    0 0,
-    calc(50% + var(--hero-seam-half-width)) 0,
-    calc(50% - var(--hero-seam-half-width)) 100%,
-    0 100%
-  );
-  clip-path: polygon(
-    0 0,
-    calc(50% + var(--hero-seam-half-width)) 0,
-    calc(50% - var(--hero-seam-half-width)) 100%,
-    0 100%
-  );
+  z-index: 0;
+  -webkit-clip-path: inset(0 50% 0 0);
+  clip-path: inset(0 50% 0 0);
+  -webkit-mask-image:
+    linear-gradient(#000 0 0),
+    url("./assets/preacherman-hero-logo.svg");
+  mask-image:
+    linear-gradient(#000 0 0),
+    url("./assets/preacherman-hero-logo.svg");
+  -webkit-mask-position: center, center;
+  mask-position: center, center;
+  -webkit-mask-size: 100% 100%, clamp(7rem, 16.5vw, 13.25rem) auto;
+  mask-size: 100% 100%, clamp(7rem, 16.5vw, 13.25rem) auto;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
 }
 
 .hero__marquee-panel--mirrored {
-  -webkit-clip-path: polygon(
-    calc(50% + var(--hero-seam-half-width)) 0,
-    100% 0,
-    100% 100%,
-    calc(50% - var(--hero-seam-half-width)) 100%
-  );
-  clip-path: polygon(
-    calc(50% + var(--hero-seam-half-width)) 0,
-    100% 0,
-    100% 100%,
-    calc(50% - var(--hero-seam-half-width)) 100%
-  );
+  z-index: 1;
+  -webkit-clip-path: inset(0 0 0 50%);
+  clip-path: inset(0 0 0 50%);
+}
+
+.hero__marquee-panel--logo-mask {
+  z-index: 3;
+  -webkit-mask: url("./assets/preacherman-hero-logo.svg") center / clamp(7rem, 16.5vw, 13.25rem) auto no-repeat;
+  mask: url("./assets/preacherman-hero-logo.svg") center / clamp(7rem, 16.5vw, 13.25rem) auto no-repeat;
 }
 
 .hero__marquee-track,
@@ -270,7 +300,7 @@ body {
 }
 
 .hero__marquee-track {
-  animation: hero-name-marquee 72s linear infinite;
+  animation: hero-name-marquee 100s linear infinite;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
   will-change: transform;
@@ -289,9 +319,13 @@ body {
   transform-origin: center;
 }
 
-.hero__marquee-panel--mirrored .hero__marquee-sequence > span {
-  direction: rtl;
-  unicode-bidi: bidi-override;
+.hero__marquee-letter {
+  display: inline-block;
+  transform-origin: center;
+}
+
+.hero__marquee-panel--mirrored .hero__marquee-letter,
+.hero__marquee-panel--logo-mask .hero__marquee-letter {
   transform: scaleX(-1);
 }
 
@@ -333,8 +367,7 @@ body {
   }
 }
 
-.hero__tagline,
-.hero__journey {
+.hero__tagline {
   font-family: "Bodoni Moda", "Libre Baskerville", Georgia, serif;
   font-size: clamp(1.05rem, 2.1vw, 2rem);
   font-optical-sizing: auto;
@@ -345,11 +378,10 @@ body {
 }
 
 .hero__tagline {
-  transform: translateY(calc(-1 * clamp(1.25rem, 3.5vh, 2rem)));
+  transform: none;
 }
 
-html[data-language="zh"] .hero__tagline,
-html[data-language="zh"] .hero__journey {
+html[data-language="zh"] .hero__tagline {
   font-family:
     "MiSans ExtraLight",
     "Bodoni Moda",
@@ -358,45 +390,6 @@ html[data-language="zh"] .hero__journey {
     STSong,
     Georgia,
     serif;
-}
-
-.hero__journey {
-  position: absolute;
-  bottom: clamp(0.55rem, 1.35vh, 0.9rem);
-  left: 50%;
-  display: inline-block;
-  width: max-content;
-  max-width: calc(100vw - (2 * var(--page-gutter)));
-  margin: 0;
-  color: var(--ink);
-  font-size: clamp(0.9rem, 1.45vw, 1.08rem);
-  letter-spacing: clamp(0.045em, 0.12vw, 0.08em);
-  text-decoration: none;
-  transform: translateX(-50%);
-  cursor: pointer;
-}
-
-.hero__journey::after {
-  position: absolute;
-  right: 0;
-  bottom: -0.38rem;
-  left: 0;
-  height: 1px;
-  background: currentColor;
-  content: "";
-  transform: scaleX(0);
-  transform-origin: left center;
-  transition: transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.hero__journey:hover::after,
-.hero__journey:focus-visible::after {
-  transform: scaleX(1);
-}
-
-.hero__journey:focus-visible {
-  outline: 1px solid currentColor;
-  outline-offset: 0.55rem;
 }
 
 .hero__actions {
@@ -942,10 +935,6 @@ html[data-language="zh"] .site-footer__brand-name {
   .hero__tagline {
     width: min(92vw, 30rem);
     margin-inline: auto;
-  }
-
-  .hero__journey {
-    max-width: calc(100vw - 2rem);
   }
 
   .hero__platform-menu {

@@ -70,6 +70,18 @@
     ),
   ];
 
+  document.querySelectorAll(".hero__marquee-sequence > span").forEach((word) => {
+    const letters = [...word.textContent];
+    word.replaceChildren(
+      ...letters.map((letter) => {
+        const glyph = document.createElement("span");
+        glyph.className = "hero__marquee-letter";
+        glyph.textContent = letter;
+        return glyph;
+      }),
+    );
+  });
+
   if (
     !header ||
     !brand ||
@@ -278,7 +290,7 @@
       orWith: "或使用",
       menuOpen: "菜单",
       menuClose: "关闭",
-      tagline: "探索人与智能之间新的连接方式",
+      tagline: "普利彻带来全新的人工智能交互方式",
       downloadOptions: "下载选项",
       tryWindows: "下载 Windows",
       tryMacOS: "下载 macOS",
