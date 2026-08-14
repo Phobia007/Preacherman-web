@@ -416,11 +416,9 @@
     svg.replaceChildren(
       defs,
       pmLayer,
-      flatTextViewport,
-      recessedTextViewport,
     );
     svg.dataset.entrance = "static";
-    svg.dataset.booleanMode = "recessed";
+    svg.dataset.booleanMode = "none";
 
     let sequenceWidth = 0;
     let phaseOffset = 0;
@@ -499,7 +497,9 @@
       const trackX = -sequenceWidth + phaseOffset + progress * sequenceWidth;
       baseTrack.setAttribute("transform", `translate(${trackX} 0)`);
       recessedTrack.setAttribute("transform", `translate(${trackX} 0)`);
-      if (!reducedMotion) animationFrame = window.requestAnimationFrame(update);
+      if (!reducedMotion && baseTrack.isConnected) {
+        animationFrame = window.requestAnimationFrame(update);
+      }
     };
 
     const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");

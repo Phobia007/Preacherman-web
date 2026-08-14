@@ -31,6 +31,14 @@
 }
 
 @font-face {
+  font-family: "Boska Regular";
+  src: url("./assets/Boska-Regular.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
   font-family: "MiSans ExtraLight";
   src: url("./assets/MiSans-ExtraLight.ttf") format("truetype");
   font-style: normal;
@@ -253,6 +261,67 @@ body {
   height: 100%;
   overflow: visible;
   pointer-events: none;
+}
+
+.hero__edge-copy {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  margin: 0;
+  color: var(--ink);
+  font-family: "Boska Regular", "Bodoni Moda", serif;
+  font-size: clamp(1rem, 2.6vw, 2.6rem);
+  font-weight: 400;
+  line-height: 0.96;
+  letter-spacing: 0.01em;
+  pointer-events: none;
+}
+
+html[data-language="zh"] .hero__edge-copy {
+  font-family: "MiSans ExtraLight", sans-serif;
+  font-weight: 200;
+}
+
+.hero__edge-copy-part {
+  position: absolute;
+  top: auto;
+  bottom: clamp(1.5rem, 4vh, 2.75rem);
+  width: 42vw;
+  max-width: 42vw;
+  text-align: center;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+
+.hero__edge-copy-part--left {
+  left: 25%;
+}
+
+.hero__edge-copy-part--right {
+  left: 75%;
+}
+
+#final-pm-monogram {
+  opacity: 0.04;
+  animation: pm-groove-deepen 5s cubic-bezier(0.37, 0, 0.63, 1) both;
+}
+
+@keyframes pm-groove-deepen {
+  0% {
+    opacity: 0.04;
+  }
+
+  28% {
+    opacity: 0.16;
+  }
+
+  62% {
+    opacity: 0.54;
+  }
+
+  100% {
+    opacity: 1;
+  }
 }
 
 .hero-logo__flat-track,
@@ -485,12 +554,12 @@ html[data-language="zh"] .hero__tagline {
   min-height: 0;
   visibility: hidden;
   opacity: 0;
-  transform: translate3d(0, 1.5rem, 0);
+  transform: none;
+  background: transparent;
   pointer-events: none;
   transition:
-    opacity 480ms ease,
-    transform 700ms cubic-bezier(0.22, 1, 0.36, 1),
-    visibility 0s linear 700ms;
+    opacity 760ms ease,
+    visibility 0s linear 950ms;
 }
 
 .showcase-sequence__panel.is-active {
@@ -677,6 +746,47 @@ html[data-language="zh"] .hero__tagline {
 
 .ownership-section .interaction-section__title {
   max-width: 14ch;
+}
+
+.showcase-sequence__panel .update-section__card,
+.showcase-sequence__panel .interaction-section__card {
+  opacity: 0;
+  transform: translate3d(0, clamp(2.5rem, 7vh, 4.75rem), 0) scale(0.985);
+  transform-origin: center;
+  transition:
+    opacity 720ms ease,
+    transform 950ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+.showcase-sequence__panel .interaction-section__title,
+.showcase-sequence__panel .update-section__title {
+  opacity: 0;
+  transition:
+    opacity 560ms ease,
+    transform 780ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+.showcase-sequence__panel .interaction-section__title {
+  transform: translate3d(clamp(-4.5rem, -6vw, -2.75rem), 0, 0);
+}
+
+.showcase-sequence__panel .update-section__title {
+  transform: translate3d(clamp(2.75rem, 6vw, 4.5rem), 0, 0);
+}
+
+.showcase-sequence__panel.is-active .update-section__card,
+.showcase-sequence__panel.is-active .interaction-section__card,
+.showcase-sequence__panel.is-active .interaction-section__title,
+.showcase-sequence__panel.is-active .update-section__title {
+  opacity: 1;
+  transform: translate3d(0, 0, 0) scale(1);
+}
+
+.showcase-sequence__panel.is-active .update-section__card,
+.showcase-sequence__panel.is-active .interaction-section__card {
+  transition-delay: 70ms;
 }
 
 .interaction-section.is-reveal-ready .interaction-section__title,
@@ -937,11 +1047,30 @@ html[data-language="zh"] .site-footer__brand-name {
   .showcase-sequence__panel {
     transition: none;
   }
+
+  .showcase-sequence__panel .update-section__card,
+  .showcase-sequence__panel .interaction-section__card,
+  .showcase-sequence__panel .interaction-section__title,
+  .showcase-sequence__panel .update-section__title {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
 }
 
 @media (max-width: 560px) {
   .hero {
     padding-inline: 1rem;
+  }
+
+  .hero__edge-copy {
+    font-size: clamp(0.95rem, 4.2vw, 1.15rem);
+  }
+
+  .hero__edge-copy-part {
+    bottom: calc(1.25rem + env(safe-area-inset-bottom));
+    width: 44vw;
+    max-width: 44vw;
   }
 
   .hero__tagline {
@@ -3087,6 +3216,11 @@ body.is-navigation-locked {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  #final-pm-monogram {
+    opacity: 1;
+    animation: none;
+  }
+
   .hero__platform-button,
   .hero__platform-menu,
   .hero__platform-option {

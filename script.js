@@ -194,6 +194,8 @@
       menuOpen: "MENU",
       menuClose: "CLOSE",
       tryPreacherman: "Try Preacherman",
+      heroLeftCopy: "Much Easier",
+      heroRightCopy: "Intelligence",
       tagline: "A Much Easier Intelligence.",
       downloadOptions: "Download options",
       tryWindows: "Download Windows",
@@ -203,7 +205,7 @@
       downloadIntelMac: "Download for Intel Mac",
       newUpdate: "New Update",
       interactionShowcase: "Interaction style showcase",
-      newInteractionStyle: "Brand New Interaction Style",
+      newInteractionStyle: "Entirely New Interaction Style",
       stateEngineDecoupled: "State and engine decoupled",
       completionShowcase: "Task completion showcase",
       propertyShowcase: "Digital property showcase",
@@ -215,7 +217,7 @@
       statementBreakBefore: 3,
       statementUsesSpaces: true,
       footerBrand: "PREACHERMAN",
-      footerTagline: "A brand-new way to interact with artificial intelligence",
+      footerTagline: "An entirely new way to interact with artificial intelligence",
       copyright: "© 2026 Preacherman. All rights reserved.",
       legal: "Legal",
       privacy: "Privacy",
@@ -279,6 +281,8 @@
       menuOpen: "菜单",
       menuClose: "关闭",
       tryPreacherman: "试一试",
+      heroLeftCopy: "更简单",
+      heroRightCopy: "更智能",
       tagline: "普利彻带来全新的人工智能交互方式",
       downloadOptions: "下载选项",
       tryWindows: "下载 Windows",
@@ -1020,10 +1024,18 @@
   });
 
   if (showcaseSequence && showcasePanels.length) {
-    let activeShowcaseIndex = 0;
+    let activeShowcaseIndex = -1;
     let showcaseFrame = 0;
 
     const setActiveShowcase = (nextIndex) => {
+      if (nextIndex < 0) {
+        if (activeShowcaseIndex >= 0) {
+          showcasePanels[activeShowcaseIndex]?.classList.remove("is-active");
+        }
+        activeShowcaseIndex = -1;
+        return;
+      }
+
       const clampedIndex = Math.min(
         showcasePanels.length - 1,
         Math.max(0, nextIndex),
@@ -1031,7 +1043,9 @@
 
       if (clampedIndex === activeShowcaseIndex) return;
 
-      showcasePanels[activeShowcaseIndex]?.classList.remove("is-active");
+      if (activeShowcaseIndex >= 0) {
+        showcasePanels[activeShowcaseIndex]?.classList.remove("is-active");
+      }
       showcasePanels[clampedIndex]?.classList.add("is-active");
       activeShowcaseIndex = clampedIndex;
     };
@@ -1040,6 +1054,11 @@
       showcaseFrame = 0;
 
       const bounds = showcaseSequence.getBoundingClientRect();
+      if (bounds.top > 0 || bounds.bottom <= 0) {
+        setActiveShowcase(-1);
+        return;
+      }
+
       const scrollRange = Math.max(1, bounds.height - window.innerHeight);
       const progress = Math.min(1, Math.max(0, -bounds.top / scrollRange));
       const nextIndex = Math.min(
