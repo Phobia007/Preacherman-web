@@ -55,32 +55,19 @@
   const workspaceContent = navigationWorkspace?.querySelector(
     ".navigation-workspace__content",
   );
-  const workspaceBackdrop = navigationWorkspace?.querySelector(
-    ".navigation-workspace__backdrop",
-  );
   const workspaceClose = navigationWorkspace?.querySelector(
     ".navigation-workspace__close",
   );
   const workspaceRootClose = navigationWorkspace?.querySelector(
     ".navigation-workspace__root-close",
   );
-  const revealSections = [
-    ...document.querySelectorAll(
-      ".update-section, .interaction-section, .statement-section, .site-footer",
-    ),
+  const showcaseSequence = document.querySelector("[data-showcase-sequence]");
+  const showcasePanels = [
+    ...(showcaseSequence?.querySelectorAll(".showcase-sequence__panel") || []),
   ];
-
-  document.querySelectorAll(".hero__marquee-sequence > span").forEach((word) => {
-    const letters = [...word.textContent];
-    word.replaceChildren(
-      ...letters.map((letter) => {
-        const glyph = document.createElement("span");
-        glyph.className = "hero__marquee-letter";
-        glyph.textContent = letter;
-        return glyph;
-      }),
-    );
-  });
+  const revealSections = [
+    ...document.querySelectorAll(".statement-section, .site-footer"),
+  ];
 
   if (
     !header ||
@@ -104,7 +91,6 @@
     !workspaceRailTitle ||
     !workspaceMenu ||
     !workspaceContent ||
-    !workspaceBackdrop ||
     !workspaceClose ||
     !workspaceRootClose
   ) {
@@ -207,6 +193,7 @@
       orWith: "Or With",
       menuOpen: "MENU",
       menuClose: "CLOSE",
+      tryPreacherman: "Try Preacherman",
       tagline: "A Much Easier Intelligence.",
       downloadOptions: "Download options",
       tryWindows: "Download Windows",
@@ -217,7 +204,7 @@
       newUpdate: "New Update",
       interactionShowcase: "Interaction style showcase",
       newInteractionStyle: "Brand New Interaction Style",
-      stateEngineDecoupled: "State&engine decoupled",
+      stateEngineDecoupled: "State and engine decoupled",
       completionShowcase: "Task completion showcase",
       propertyShowcase: "Digital property showcase",
       ownProperty: "Own Your Things as Property",
@@ -228,6 +215,7 @@
       statementBreakBefore: 3,
       statementUsesSpaces: true,
       footerBrand: "PREACHERMAN",
+      footerTagline: "A brand-new way to interact with artificial intelligence",
       copyright: "© 2026 Preacherman. All rights reserved.",
       legal: "Legal",
       privacy: "Privacy",
@@ -290,6 +278,7 @@
       orWith: "或使用",
       menuOpen: "菜单",
       menuClose: "关闭",
+      tryPreacherman: "试一试",
       tagline: "普利彻带来全新的人工智能交互方式",
       downloadOptions: "下载选项",
       tryWindows: "下载 Windows",
@@ -311,6 +300,7 @@
       statementBreakBefore: 4,
       statementUsesSpaces: false,
       footerBrand: "普利彻",
+      footerTagline: "带来全新的人工智能交互方式",
       copyright: "© 2026 Preacherman。保留所有权利。",
       legal: "法律信息",
       privacy: "隐私政策",
@@ -929,12 +919,6 @@
     { passive: true },
   );
 
-  workspaceBackdrop.addEventListener("click", (event) => {
-    if (event.target === workspaceBackdrop) {
-      closeNavigationWorkspace({ restoreFocus: true });
-    }
-  });
-
   mobileToggle.addEventListener("click", () => {
     if (mobileOpen) closeMobileMenu({ restoreFocus: true });
     else openMobileMenu();
@@ -1034,6 +1018,47 @@
     closeMacDownloadMenu();
     closeNavigationWorkspace();
   });
+
+  if (showcaseSequence && showcasePanels.length) {
+    let activeShowcaseIndex = 0;
+    let showcaseFrame = 0;
+
+    const setActiveShowcase = (nextIndex) => {
+      const clampedIndex = Math.min(
+        showcasePanels.length - 1,
+        Math.max(0, nextIndex),
+      );
+
+      if (clampedIndex === activeShowcaseIndex) return;
+
+      showcasePanels[activeShowcaseIndex]?.classList.remove("is-active");
+      showcasePanels[clampedIndex]?.classList.add("is-active");
+      activeShowcaseIndex = clampedIndex;
+    };
+
+    const updateShowcaseSequence = () => {
+      showcaseFrame = 0;
+
+      const bounds = showcaseSequence.getBoundingClientRect();
+      const scrollRange = Math.max(1, bounds.height - window.innerHeight);
+      const progress = Math.min(1, Math.max(0, -bounds.top / scrollRange));
+      const nextIndex = Math.min(
+        showcasePanels.length - 1,
+        Math.floor(progress * showcasePanels.length),
+      );
+
+      setActiveShowcase(nextIndex);
+    };
+
+    const scheduleShowcaseUpdate = () => {
+      if (showcaseFrame) return;
+      showcaseFrame = window.requestAnimationFrame(updateShowcaseSequence);
+    };
+
+    window.addEventListener("scroll", scheduleShowcaseUpdate, { passive: true });
+    window.addEventListener("resize", scheduleShowcaseUpdate);
+    updateShowcaseSequence();
+  }
 
   if (revealSections.length) {
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");

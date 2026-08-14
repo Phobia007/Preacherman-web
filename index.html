@@ -10,7 +10,7 @@
       content="The opening scene of the new Preacherman website."
     />
     <title>Preacherman</title>
-    <link rel="stylesheet" href="./styles.css?v=20260813-92" />
+    <link rel="stylesheet" href="./styles.css?v=20260814-106" />
     <link rel="icon" href="./assets/preacherman-logo.svg" type="image/svg+xml" />
   </head>
   <body>
@@ -504,81 +504,23 @@
         </div>
       </div>
 
-      <div class="navigation-workspace__backdrop"></div>
     </section>
 
     <main class="site-content">
-      <section class="hero" aria-labelledby="hero-title">
-        <div class="hero__name" aria-label="PREACHERMAN">
-          <div class="hero__marquee" aria-hidden="true">
-            <div class="hero__marquee-panel hero__marquee-panel--original">
-              <div class="hero__marquee-track">
-                <div class="hero__marquee-sequence">
-                  <span>PREACHERMAN</span><span>PREACHERMAN</span><span>PREACHERMAN</span>
-                  <span>PREACHERMAN</span><span>PREACHERMAN</span><span>PREACHERMAN</span>
-                </div>
-                <div class="hero__marquee-sequence">
-                  <span>PREACHERMAN</span><span>PREACHERMAN</span><span>PREACHERMAN</span>
-                  <span>PREACHERMAN</span><span>PREACHERMAN</span><span>PREACHERMAN</span>
-                </div>
-              </div>
-            </div>
-            <div class="hero__marquee-panel hero__marquee-panel--mirrored">
-              <div class="hero__marquee-track">
-                <div class="hero__marquee-sequence">
-                  <span>PREACHERMAN</span><span>PREACHERMAN</span><span>PREACHERMAN</span>
-                  <span>PREACHERMAN</span><span>PREACHERMAN</span><span>PREACHERMAN</span>
-                </div>
-                <div class="hero__marquee-sequence">
-                  <span>PREACHERMAN</span><span>PREACHERMAN</span><span>PREACHERMAN</span>
-                  <span>PREACHERMAN</span><span>PREACHERMAN</span><span>PREACHERMAN</span>
-                </div>
-              </div>
-            </div>
-            <div class="hero__marquee-panel hero__marquee-panel--logo-mask">
-              <div class="hero__marquee-track">
-                <div class="hero__marquee-sequence">
-                  <span>PREACHERMAN</span><span>PREACHERMAN</span><span>PREACHERMAN</span>
-                  <span>PREACHERMAN</span><span>PREACHERMAN</span><span>PREACHERMAN</span>
-                </div>
-                <div class="hero__marquee-sequence">
-                  <span>PREACHERMAN</span><span>PREACHERMAN</span><span>PREACHERMAN</span>
-                  <span>PREACHERMAN</span><span>PREACHERMAN</span><span>PREACHERMAN</span>
-                </div>
-              </div>
-            </div>
-          </div>
+      <section class="hero">
+        <div class="hero__name logo-lockup" role="img" aria-label="PREACHERMAN AN EASIER INTELLIGENCE">
+          <svg
+            class="hero__logo-svg"
+            aria-hidden="true"
+            focusable="false"
+            overflow="visible"
+          ></svg>
         </div>
-        <img
-          class="hero__center-logo"
-          src="./assets/preacherman-hero-logo.svg"
-          alt=""
-          aria-hidden="true"
-          width="212"
-          height="240"
-        />
-        <h1 id="hero-title" class="hero__title">
-          <span class="hero__tagline" data-i18n="tagline">
-            A Much Easier Intelligence.
-          </span>
-        </h1>
       </section>
 
-      <section class="update-section" aria-labelledby="update-section-title">
-        <div class="update-section__intro">
-          <h2
-            id="update-section-title"
-            class="update-section__title"
-            data-i18n="newUpdate"
-          >
-            New Update
-          </h2>
-        </div>
-
-        <div class="update-section__card" aria-hidden="true"></div>
-      </section>
-
-      <section class="interaction-section" aria-labelledby="interaction-section-title">
+      <div class="showcase-sequence" data-showcase-sequence>
+        <div class="showcase-sequence__viewport">
+      <section class="interaction-section showcase-sequence__panel is-active" aria-labelledby="interaction-section-title">
         <div
           class="interaction-section__card"
           role="img"
@@ -598,7 +540,7 @@
       </section>
 
       <section
-        class="update-section completion-section"
+        class="update-section completion-section showcase-sequence__panel"
         aria-labelledby="completion-section-title"
       >
         <div class="update-section__intro">
@@ -620,7 +562,7 @@
       </section>
 
       <section
-        class="interaction-section ownership-section"
+        class="interaction-section ownership-section showcase-sequence__panel"
         aria-labelledby="ownership-section-title"
       >
         <div
@@ -642,7 +584,7 @@
       </section>
 
       <section
-        class="update-section adaptability-section"
+        class="update-section adaptability-section showcase-sequence__panel"
         aria-labelledby="adaptability-section-title"
       >
         <div class="update-section__intro">
@@ -662,6 +604,8 @@
           data-i18n-aria-label="adaptabilityShowcase"
         ></div>
       </section>
+        </div>
+      </div>
 
       <section class="statement-section" aria-labelledby="statement-section-title">
         <div class="statement-section__content">
@@ -770,6 +714,9 @@
               alt=""
             />
             <span class="site-footer__brand-name" data-i18n="footerBrand">PREACHERMAN</span>
+            <p class="site-footer__brand-tagline" data-i18n="footerTagline">
+              A brand-new way to interact with artificial intelligence
+            </p>
           </div>
         </div>
       </div>
@@ -797,6 +744,7 @@
 
     <!-- TODO: connect navigation links to future site routes -->
     <script src="./assets/lucide.min.js"></script>
-    <script src="./script.js?v=20260813-83"></script>
+    <script src="./hero-logo.js?v=20260814-20"></script>
+    <script src="./script.js?v=20260813-88"></script>
   </body>
 </html>
