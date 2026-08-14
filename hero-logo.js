@@ -89,6 +89,67 @@
     grooveMask.append(grooveMaskShape);
     defs.append(grooveMask);
 
+    const recessedTextMask = makeSvg("mask", {
+      id: "hero-logo-text-recessed-mask",
+      maskUnits: "userSpaceOnUse",
+      maskContentUnits: "userSpaceOnUse",
+      x: "0",
+      y: "0",
+      width: "1",
+      height: "1",
+      "mask-type": "alpha",
+    });
+    const recessedTextMaskShape = makeSvg("use", { fill: "white" });
+    setUseReference(recessedTextMaskShape, "hero-logo-pm-geometry");
+    recessedTextMask.append(recessedTextMaskShape);
+    defs.append(recessedTextMask);
+
+    const flatTextMask = makeSvg("mask", {
+      id: "hero-logo-text-flat-mask",
+      maskUnits: "userSpaceOnUse",
+      maskContentUnits: "userSpaceOnUse",
+      x: "0",
+      y: "0",
+      width: "1",
+      height: "1",
+      "mask-type": "luminance",
+    });
+    const flatTextMaskBackground = makeSvg("rect", {
+      x: "0",
+      y: "0",
+      width: "1",
+      height: "1",
+      fill: "white",
+    });
+    const flatTextMaskShape = makeSvg("use", { fill: "black" });
+    setUseReference(flatTextMaskShape, "hero-logo-pm-geometry");
+    flatTextMask.append(flatTextMaskBackground, flatTextMaskShape);
+    defs.append(flatTextMask);
+
+    const textMaskSoftener = makeSvg("filter", {
+      id: "hero-logo-text-mask-softener",
+      filterUnits: "userSpaceOnUse",
+      x: "-4",
+      y: "-4",
+      width: "220",
+      height: "248",
+      "color-interpolation-filters": "sRGB",
+    });
+    textMaskSoftener.append(
+      makeSvg("feGaussianBlur", {
+        stdDeviation: "0.55",
+      }),
+    );
+    defs.append(textMaskSoftener);
+    recessedTextMaskShape.setAttribute(
+      "filter",
+      "url(#hero-logo-text-mask-softener)",
+    );
+    flatTextMaskShape.setAttribute(
+      "filter",
+      "url(#hero-logo-text-mask-softener)",
+    );
+
     const makeEdgeFilter = ({
       id,
       dx,
@@ -200,6 +261,98 @@
     );
     defs.append(floorFilter);
 
+    const recessedTextFilter = makeSvg("filter", {
+      id: "hero-logo-recessed-text-material",
+      x: "-2%",
+      y: "-8%",
+      width: "104%",
+      height: "116%",
+      "color-interpolation-filters": "sRGB",
+    });
+    const recessedTextBaseColor = makeSvg("feFlood", {
+      "flood-color": "#595650",
+      "flood-opacity": "0.9",
+      result: "recessed-base-color",
+    });
+    const recessedTextBase = makeSvg("feComposite", {
+      in: "recessed-base-color",
+      in2: "SourceAlpha",
+      operator: "in",
+      result: "recessed-base",
+    });
+    const recessedTextSoftAlpha = makeSvg("feGaussianBlur", {
+      in: "SourceAlpha",
+      stdDeviation: "0.34",
+      result: "recessed-soft-alpha",
+    });
+    const recessedTextDarkOffset = makeSvg("feOffset", {
+      in: "recessed-soft-alpha",
+      dx: "0.9",
+      dy: "0.9",
+      result: "recessed-dark-offset",
+    });
+    const recessedTextDarkEdge = makeSvg("feComposite", {
+      in: "SourceAlpha",
+      in2: "recessed-dark-offset",
+      operator: "out",
+      result: "recessed-dark-edge",
+    });
+    const recessedTextDarkColor = makeSvg("feFlood", {
+      "flood-color": "#151412",
+      "flood-opacity": "0.64",
+      result: "recessed-dark-color",
+    });
+    const recessedTextDarkWall = makeSvg("feComposite", {
+      in: "recessed-dark-color",
+      in2: "recessed-dark-edge",
+      operator: "in",
+      result: "recessed-dark-wall",
+    });
+    const recessedTextLightOffset = makeSvg("feOffset", {
+      in: "recessed-soft-alpha",
+      dx: "-0.7",
+      dy: "-0.7",
+      result: "recessed-light-offset",
+    });
+    const recessedTextLightEdge = makeSvg("feComposite", {
+      in: "SourceAlpha",
+      in2: "recessed-light-offset",
+      operator: "out",
+      result: "recessed-light-edge",
+    });
+    const recessedTextLightColor = makeSvg("feFlood", {
+      "flood-color": "#ffffff",
+      "flood-opacity": "0.74",
+      result: "recessed-light-color",
+    });
+    const recessedTextLightWall = makeSvg("feComposite", {
+      in: "recessed-light-color",
+      in2: "recessed-light-edge",
+      operator: "in",
+      result: "recessed-light-wall",
+    });
+    const recessedTextMerge = makeSvg("feMerge");
+    recessedTextMerge.append(
+      makeSvg("feMergeNode", { in: "recessed-base" }),
+      makeSvg("feMergeNode", { in: "recessed-dark-wall" }),
+      makeSvg("feMergeNode", { in: "recessed-light-wall" }),
+    );
+    recessedTextFilter.append(
+      recessedTextBaseColor,
+      recessedTextBase,
+      recessedTextSoftAlpha,
+      recessedTextDarkOffset,
+      recessedTextDarkEdge,
+      recessedTextDarkColor,
+      recessedTextDarkWall,
+      recessedTextLightOffset,
+      recessedTextLightEdge,
+      recessedTextLightColor,
+      recessedTextLightWall,
+      recessedTextMerge,
+    );
+    defs.append(recessedTextFilter);
+
     const pmLayer = makeSvg("g", {
       id: "final-pm-monogram",
       mask: "url(#hero-logo-groove-mask)",
@@ -238,13 +391,36 @@
 
     const baseTrack = makeSvg("g", {
       id: "wordmark-base",
+      class: "hero-logo__flat-track",
       fill: "var(--logo-ink)",
       "fill-rule": "evenodd",
     });
+    const flatTextViewport = makeSvg("g", {
+      id: "wordmark-flat-viewport",
+      mask: "url(#hero-logo-text-flat-mask)",
+    });
+    flatTextViewport.append(baseTrack);
 
-    svg.replaceChildren(defs, pmLayer, baseTrack);
+    const recessedTextViewport = makeSvg("g", {
+      id: "wordmark-recessed-viewport",
+      mask: "url(#hero-logo-text-recessed-mask)",
+    });
+    const recessedTrack = makeSvg("g", {
+      id: "wordmark-recessed",
+      class: "hero-logo__recessed-track",
+      fill: "var(--logo-ink)",
+      "fill-rule": "evenodd",
+    });
+    recessedTextViewport.append(recessedTrack);
+
+    svg.replaceChildren(
+      defs,
+      pmLayer,
+      flatTextViewport,
+      recessedTextViewport,
+    );
     svg.dataset.entrance = "static";
-    svg.dataset.booleanMode = "none";
+    svg.dataset.booleanMode = "recessed";
 
     let sequenceWidth = 0;
     let phaseOffset = 0;
@@ -259,6 +435,9 @@
       const letterSpacing = fontSize * 0.045;
       const wordGap = fontSize * 1.8585;
       const baseline = height / 2 + fontSize * 0.8482142857;
+      const recessedDepthX = width <= 560 ? 0.35 : 0.7;
+      const recessedDepthY = width <= 560 ? 0.75 : 1.35;
+      const recessedScaleY = width <= 560 ? 0.992 : 0.987;
       const pmHeight = (pmWidth * 240) / 212;
       const pmLeft = (width - pmWidth) / 2;
       const pmOffsetY = height * 0.16;
@@ -268,7 +447,16 @@
       svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
       svg.setAttribute("preserveAspectRatio", "xMidYMid meet");
       pmLayer.setAttribute("transform", pmTransform);
+      [recessedTextMask, flatTextMask].forEach((mask) => {
+        mask.setAttribute("width", String(width));
+        mask.setAttribute("height", String(height));
+      });
+      flatTextMaskBackground.setAttribute("width", String(width));
+      flatTextMaskBackground.setAttribute("height", String(height));
+      recessedTextMaskShape.setAttribute("transform", pmTransform);
+      flatTextMaskShape.setAttribute("transform", pmTransform);
       baseTrack.replaceChildren();
+      recessedTrack.replaceChildren();
 
       const wordAdvance =
         glyphData.glyphs.reduce((sum, glyph) => sum + glyph.advance * scale, 0) +
@@ -281,17 +469,20 @@
           let cursor = sequence * sequenceWidth + word * (wordAdvance + wordGap);
 
           glyphData.glyphs.forEach((glyph, glyphIndex) => {
-            const letter = makeSvg("use", {
-              class: "hero-logo__letter",
-              "data-letter": glyph.letter,
-              "data-glyph-index": String(glyphIndex),
+            [baseTrack, recessedTrack].forEach((track) => {
+              const isRecessed = track === recessedTrack;
+              const letter = makeSvg("use", {
+                class: "hero-logo__letter",
+                "data-letter": glyph.letter,
+                "data-glyph-index": String(glyphIndex),
+              });
+              setUseReference(letter, `hero-logo-glyph-${glyphIndex}`);
+              letter.setAttribute(
+                "transform",
+                `translate(${cursor + (isRecessed ? recessedDepthX : 0)} ${baseline + (isRecessed ? recessedDepthY : 0)}) scale(${scale} ${scale * (isRecessed ? recessedScaleY : 1)})`,
+              );
+              track.append(letter);
             });
-            setUseReference(letter, `hero-logo-glyph-${glyphIndex}`);
-            letter.setAttribute(
-              "transform",
-              `translate(${cursor} ${baseline}) scale(${scale})`,
-            );
-            baseTrack.append(letter);
             cursor += glyph.advance * scale + letterSpacing;
           });
         }
@@ -307,6 +498,7 @@
         : ((timestamp - animationStart) % duration) / duration;
       const trackX = -sequenceWidth + phaseOffset + progress * sequenceWidth;
       baseTrack.setAttribute("transform", `translate(${trackX} 0)`);
+      recessedTrack.setAttribute("transform", `translate(${trackX} 0)`);
       if (!reducedMotion) animationFrame = window.requestAnimationFrame(update);
     };
 

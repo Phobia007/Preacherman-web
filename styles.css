@@ -255,6 +255,15 @@ body {
   pointer-events: none;
 }
 
+.hero-logo__flat-track,
+.hero-logo__recessed-track {
+  shape-rendering: geometricPrecision;
+}
+
+.hero-logo__recessed-track {
+  opacity: 1;
+}
+
 .hero__marquee-seam {
   position: absolute;
   z-index: 2;
