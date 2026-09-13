@@ -2,6 +2,7 @@ import http from "node:http";
 import { createReadStream, existsSync } from "node:fs";
 import { stat } from "node:fs/promises";
 import path from "node:path";
+import { frontendAssets } from "./frontend-assets.mjs";
 
 const root = process.cwd();
 const host = process.env.FRONTEND_HOST || "localhost";
@@ -9,8 +10,7 @@ const port = Number(process.env.FRONTEND_PORT || 5173);
 const backend = new URL(process.env.API_PROXY_TARGET || "http://127.0.0.1:3000");
 const files = new Map([
   ["/", path.join(root, "work", "Preacherman-Standalone.html")],
-  ["/index.html", path.join(root, "work", "Preacherman-Standalone.html")],
-  ["/preacherman-auth.js", path.join(root, "work", "preacherman-auth.js")],
+  ...frontendAssets.map(([source, target]) => [`/${target}`, path.join(root, source)]),
 ]);
 
 function proxy(request, response) {
@@ -52,7 +52,7 @@ const server = http.createServer(async (request, response) => {
   const fileStat = await stat(file);
   const contentType = file.endsWith(".js")
     ? "text/javascript; charset=utf-8"
-    : "text/html; charset=utf-8";
+    : file.endsWith(".txt") ? "text/plain; charset=utf-8" : "text/html; charset=utf-8";
   response.writeHead(200, {
     "content-type": contentType,
     "content-length": fileStat.size,

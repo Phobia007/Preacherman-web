@@ -2,7 +2,8 @@
   "use strict";
 
   const form = document.querySelector(".login-form");
-  if (!form) return;
+  if (!form || window.__preachermanAuthInitialized) return;
+  window.__preachermanAuthInitialized = true;
 
   const email = form.querySelector("#login-email");
   const password = form.querySelector("#login-password");
@@ -360,7 +361,7 @@ XK|383
       </svg>
     </div>
     <p class="login-scan__instruction">Open your email app and scan this code to sign in.</p>
-    <p class="login-scan__status" role="status" aria-live="polite">Email App scan sign-in is not enabled in local development yet.</p>
+    <p class="login-scan__status" role="status" aria-live="polite">本轮测试暂未开放 / Not available in this test.</p>
     <button class="login-form__text-action login-scan__back" type="button">Use email and password</button>`;
   panel.append(scanCorner, scanPanel);
 
@@ -377,18 +378,34 @@ XK|383
   let phoneReturnMode = "login";
   let scanReturnMode = "login";
   let scanOpen = false;
+  let client = null;
+  let busy = false;
+  let identityRevision = 0;
+  let verificationTimer;
+  const unavailable = "本轮测试暂未开放 / Not available in this test.";
+  const temporaryError = "暂时无法连接认证服务，请检查网络后重试。 / Authentication service is temporarily unavailable. Please retry.";
+  let setupError = "";
+
+  remember.checked = true;
+  remember.disabled = true;
+  const rememberLabel = remember.parentElement.querySelector("span");
+  rememberLabel.removeAttribute("data-i18n");
+  rememberLabel.textContent = "保持登录（测试版） / Stay signed in";
+  remember.parentElement.title = "Supabase persistent session; sign out to end this session.";
 
   function message(text, kind = "info") {
     status.textContent = text;
     status.dataset.kind = kind;
   }
 
-  function setBusy(busy) {
-    submit.disabled = busy;
-    switchModeButton.disabled = busy;
-    methodSwitchButton.disabled = busy;
-    getCode.disabled = busy;
-    submit.setAttribute("aria-busy", String(busy));
+  function setBusy(value) {
+    busy = value;
+    submit.disabled = value;
+    switchModeButton.disabled = value;
+    methodSwitchButton.disabled = value;
+    getCode.disabled = value;
+    scanCorner.disabled = value;
+    submit.setAttribute("aria-busy", String(value));
   }
 
   function setScanChannel(channel) {
@@ -402,7 +419,7 @@ XK|383
     scanInstruction.textContent = wechat
       ? "Open WeChat and scan this code to sign in."
       : "Open your email app and scan this code to sign in.";
-    scanStatus.textContent = `${wechat ? "WeChat" : "Email App"} scan sign-in is not enabled in local development yet.`;
+    scanStatus.textContent = unavailable;
   }
 
   function setScanOpen(open) {
@@ -480,33 +497,63 @@ XK|383
     setMode(user ? "account" : "login");
   }
 
-  async function api(path, options = {}) {
-    const response = await fetch(path, {
-      credentials: "include",
-      headers: { "content-type": "application/json", ...(options.headers || {}) },
-      ...options,
-    });
-    let body = null;
-    try { body = await response.json(); } catch { /* A body is optional for errors. */ }
-    if (!response.ok) {
-      const error = new Error(body?.error?.message || "The request could not be completed.");
-      error.status = response.status;
-      throw error;
+  function safeUser(user) {
+    if (!user || typeof user.id !== "string" || typeof user.email !== "string") {
+      throw new Error("Missing verified user");
     }
-    return body;
+    return { id: user.id, email: user.email };
   }
 
-  async function restoreSession() {
+  function invalidateIdentity() {
+    clearTimeout(verificationTimer);
+    return ++identityRevision;
+  }
+
+  function isTemporary(error) {
+    return error?.name === "AuthRetryableFetchError" || error instanceof TypeError ||
+      error?.status === 0 || error?.status >= 500;
+  }
+
+  function failureMessage(error) {
+    if (isTemporary(error)) return temporaryError;
+    if (error?.status === 429 || error?.code === "over_request_rate_limit") {
+      return "尝试过于频繁，请稍后重试。 / Too many attempts. Please try later.";
+    }
+    if (error?.code === "invalid_credentials") {
+      return "邮箱或密码不正确。 / Invalid email or password.";
+    }
+    return "无法完成登录，请检查测试账号状态后重试。 / Unable to sign in. Check the test account and retry.";
+  }
+
+  async function restoreSession(revision) {
     try {
-      const session = await api("/api/auth/session", { method: "GET", headers: {} });
-      setAuthenticated(session.authenticated ? session.user : null);
-    } catch {
+      // Local session is only a hint that verification is needed, never proof of identity.
+      const { data: sessionData, error: sessionError } = await client.auth.getSession();
+      if (revision !== identityRevision) return;
+      if (sessionError) throw sessionError;
+      if (!sessionData.session) {
+        setAuthenticated(null);
+        return;
+      }
+      const { data, error } = await client.auth.getUser();
+      if (revision !== identityRevision) return;
+      if (error) throw error;
+      setAuthenticated(safeUser(data.user));
+    } catch (error) {
+      if (revision !== identityRevision) return;
+      // Leave SDK storage intact on a transient failure, but do not display verified identity.
       setAuthenticated(null);
-      message("Local authentication service is unavailable.", "error");
+      message(isTemporary(error) ? temporaryError : "会话无法核验，请重新登录。 / Please sign in again.", "error");
     }
   }
 
-  switchModeButton.addEventListener("click", () => setMode(mode === "register" ? "login" : "register"));
+  function scheduleVerification() {
+    const revision = invalidateIdentity();
+    // SDK calls must run outside the synchronous auth callback (which holds a session lock).
+    verificationTimer = setTimeout(() => { void restoreSession(revision); }, 0);
+  }
+
+  switchModeButton.addEventListener("click", () => message(unavailable));
   scanCorner.addEventListener("click", () => setScanOpen(!scanOpen));
   scanBack.addEventListener("click", () => setScanOpen(false));
   for (const tab of scanTabs) {
@@ -514,6 +561,7 @@ XK|383
   }
   methodSwitchButton.addEventListener("click", () => {
     setMode(mode === "phone" ? phoneReturnMode : "phone");
+    message(unavailable);
     (mode === "phone" ? phoneNumber : email).focus();
   });
   countrySelect.addEventListener("change", () => {
@@ -521,74 +569,100 @@ XK|383
     phoneNumber.focus();
   });
   getCode.addEventListener("click", () => {
-    message("");
-    if (!phoneNumber.reportValidity()) return;
-    message("Phone verification is not enabled in local development yet.");
+    message(unavailable);
   });
-  forgot.addEventListener("click", () => message("This option is not enabled in local development yet."));
-  google.addEventListener("click", () => message("This option is not enabled in local development yet."));
+  forgot.addEventListener("click", () => message(unavailable));
+  google.addEventListener("click", () => message(unavailable));
 
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
     event.stopImmediatePropagation();
+    if (busy) return;
     message("");
 
+    if (mode === "phone" || mode === "register") {
+      message(unavailable);
+      return;
+    }
+    if (!client) {
+      message(setupError, "error");
+      return;
+    }
+
     if (mode === "account") {
+      invalidateIdentity();
       setBusy(true);
       try {
-        await api("/api/auth/logout", { method: "POST", body: "{}" });
+        const { error } = await client.auth.signOut({ scope: "local" });
+        if (error) throw error;
+        invalidateIdentity();
         form.reset();
+        remember.checked = true;
         setAuthenticated(null);
         message("You have been signed out.", "success");
       } catch (error) {
-        message(error.message, "error");
+        message(isTemporary(error) ? temporaryError : "退出未完成，请重试。 / Sign out failed. Please retry.", "error");
       } finally {
         setBusy(false);
       }
       return;
     }
 
-    if (mode === "phone") {
-      if (!form.reportValidity()) return;
-      message("Phone verification is not enabled in local development yet.");
-      return;
-    }
-
     if (!form.reportValidity()) return;
-    if (mode === "register" && password.value !== confirmPassword.value) {
-      message("Passwords do not match.", "error");
-      confirmPassword.focus();
-      return;
-    }
 
+    const revision = invalidateIdentity();
     setBusy(true);
     try {
-      if (mode === "register") {
-        await api("/api/auth/register", {
-          method: "POST",
-          body: JSON.stringify({ email: email.value.trim(), password: password.value }),
-        });
-        password.value = "";
-        confirmPassword.value = "";
-        setMode("login", "Account created. You can now sign in.");
-      } else {
-        const result = await api("/api/auth/login", {
-          method: "POST",
-          body: JSON.stringify({ email: email.value.trim(), password: password.value, remember_me: remember.checked }),
-        });
-        password.value = "";
-        setAuthenticated(result.user);
-        document.dispatchEvent(new CustomEvent("preacherman:authenticated", { detail: result.user }));
-        const openTrigger = triggers.find((trigger) => trigger.getAttribute("aria-expanded") === "true");
-        if (openTrigger) openTrigger.click();
-      }
+      const { data, error } = await client.auth.signInWithPassword({
+        email: email.value.trim(),
+        password: password.value,
+      });
+      if (revision !== identityRevision) return;
+      if (error) throw error;
+      const user = safeUser(data.user);
+      setAuthenticated(user);
+      document.dispatchEvent(new CustomEvent("preacherman:authenticated", { detail: user }));
+      const openTrigger = triggers.find((trigger) => trigger.getAttribute("aria-expanded") === "true");
+      if (openTrigger) openTrigger.click();
     } catch (error) {
-      if (error.status === 401) setAuthenticated(null);
-      message(error.message, "error");
+      if (revision !== identityRevision) return;
+      setAuthenticated(null);
+      message(failureMessage(error), "error");
     } finally {
+      password.value = "";
       setBusy(false);
     }
   }, true);
 
-  restoreSession();
+  try {
+    const config = window.PREACHERMAN_AUTH_CONFIG;
+    if (!config || !/^sb_publishable_[A-Za-z0-9_-]+$/.test(config.SUPABASE_PUBLISHABLE_KEY || "")) {
+      throw new Error("公开认证配置缺失或无效。 / Missing or invalid public auth configuration.");
+    }
+    let projectUrl;
+    try { projectUrl = new URL(config.SUPABASE_URL); } catch { /* Report configuration error below. */ }
+    if (!projectUrl || projectUrl.protocol !== "https:" || projectUrl.username || projectUrl.password ||
+        projectUrl.pathname !== "/" || projectUrl.search || projectUrl.hash) {
+      throw new Error("Supabase 项目地址无效。 / Invalid Supabase project URL.");
+    }
+    if (typeof window.supabase?.createClient !== "function") {
+      throw new Error("认证组件加载失败，请刷新重试。 / Authentication SDK failed to load. Please reload.");
+    }
+    client = window.supabase.createClient(projectUrl.origin, config.SUPABASE_PUBLISHABLE_KEY, {
+      auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: false },
+    });
+    client.auth.onAuthStateChange((event) => {
+      if (event === "SIGNED_OUT") {
+        invalidateIdentity();
+        setAuthenticated(null);
+      } else if (!busy && ["INITIAL_SESSION", "SIGNED_IN", "TOKEN_REFRESHED", "USER_UPDATED"].includes(event)) {
+        scheduleVerification();
+      }
+    });
+  } catch (error) {
+    client = null;
+    setupError = error.message || "认证初始化失败，请刷新重试。 / Authentication initialization failed.";
+    setAuthenticated(null);
+    message(setupError, "error");
+  }
 })();

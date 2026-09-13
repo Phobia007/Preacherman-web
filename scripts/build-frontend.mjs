@@ -1,21 +1,26 @@
 import fs from "node:fs";
 import path from "node:path";
+import { frontendAssets } from "./frontend-assets.mjs";
 
 const root = process.cwd();
 const html = path.join(root, "work", "Preacherman-Standalone.html");
-const auth = path.join(root, "work", "preacherman-auth.js");
-const dist = path.join(root, "dist");
+const outputDirectories = ["dist", "deploy/preacherman-site/public"];
 
-for (const file of [html, auth]) {
+for (const [source] of frontendAssets) {
+  const file = path.join(root, source);
   if (!fs.existsSync(file)) throw new Error(`Missing frontend source: ${file}`);
 }
 const source = fs.readFileSync(html, "utf8");
 for (const marker of ["/preacherman-auth.js", "login-form", "site-content"]) {
   if (!source.includes(marker)) throw new Error(`Frontend is missing required marker: ${marker}`);
 }
-fs.rmSync(dist, { recursive: true, force: true });
-fs.mkdirSync(dist, { recursive: true });
-fs.copyFileSync(html, path.join(dist, "index.html"));
-fs.copyFileSync(auth, path.join(dist, "preacherman-auth.js"));
+// Never clear unrelated files. Only overwrite these explicitly managed artifacts.
+for (const directory of outputDirectories) {
+  for (const [source, target] of frontendAssets) {
+    const output = path.join(root, directory, target);
+    fs.mkdirSync(path.dirname(output), { recursive: true });
+    fs.copyFileSync(path.join(root, source), output);
+  }
+}
 await import("./smoke-check-frontend.mjs");
-console.log("Frontend build complete: dist/index.html and dist/preacherman-auth.js");
+console.log("Frontend build complete: canonical assets synchronized to dist and Cloudflare public.");
