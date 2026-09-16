@@ -1,3 +1,74 @@
+# Current website deployment — 2026-09-17
+
+- Status: deployed from GitHub and verified on https://preachermanai.com/.
+- Repository: https://github.com/Phobia007/Preacherman-web, production branch `main`.
+- Runtime source commit: `a62a988baa21810c9024fb57a47d5694d669b485`.
+- Existing Cloudflare Worker: `preacherman-site`; its existing domain bindings were retained.
+- Successful Workers Build: `5d7dd3a1-9431-425f-a68e-0bb90fd0a8e2`.
+- Deployment: `f44a72d7-5fd8-4b48-a613-b405605d7def`.
+- Worker version: `0434bab1-603e-4395-a541-57bce4b80394`.
+
+## Git integration
+
+Cloudflare Workers Builds is now connected to this repository. Pushes to `main`
+build and deploy the production Worker. Other branches upload preview versions
+without deploying them to production.
+
+Both triggers use repository root `/` and this build command:
+
+```sh
+npm run typecheck && node --test scripts/test-auth.mjs && npm run build && npm ci --prefix deploy/preacherman-site --no-audit --no-fund
+```
+
+Production deployment command:
+
+```sh
+npm run deploy --prefix deploy/preacherman-site
+```
+
+Non-production version-upload command:
+
+```sh
+cd deploy/preacherman-site && npx wrangler versions upload
+```
+
+Cloudflare credentials remain in its managed build configuration. No deployment
+token or credential was committed. The public directory is generated exclusively
+from the canonical sources listed in `scripts/frontend-assets.mjs`; the older
+repository-root HTML and GitHub Pages deployment are not this domain's source.
+
+## Verification
+
+- Local syntax checks, eight isolated authentication tests, frontend build/smoke
+  checks and Wrangler deployment dry-run passed.
+- Cloudflare independently cloned the pushed commit and passed the same source
+  checks before deploying the generated assets.
+- All 43 files fetched through the production domain matched the committed Git
+  blobs byte for byte. No workstation path or local preview dependency is needed.
+- Desktop and mobile browser checks passed in dark and light appearances, with
+  English and Chinese respectively: dark initial appearance even with a light OS
+  preference, animated Pathfinder, bilingual header introduction open/close,
+  and Google/GitHub/Apple button order, icons and placeholder notices.
+- The first wheel movement revealed the first film and video playback advanced.
+- No failed same-origin resource response or new browser error was observed.
+  The pre-existing `Identifier '$' has already been declared` diagnostic remains.
+- This release does not add OAuth authentication. GitHub and Apple remain visual
+  choices with the same unavailable notice as Google; no test login was submitted.
+
+Verification evidence is retained locally under
+`D:/preacherman/output/playwright/web-publish-20260917/` and
+`D:/preacherman/output/deploy/web-20260917/`.
+
+The previous production version `accf84ab-b930-42d4-8d64-9c5d60a8b08e`
+remains recorded for rollback. No desktop application source or executable was changed.
+
+---
+
+## Historical first-deployment report (2026-08-27)
+
+The following report is archival; its pending domain/network status was superseded
+by the verified deployment above.
+
 # Preacherman Workers deployment report
 
 - Date and time: 2026-08-27 18:04:06 CST

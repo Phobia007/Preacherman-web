@@ -64,7 +64,10 @@ Build, syntax checks, smoke, and `npm run check` in the Cloudflare project must 
 before release. None substitutes for actual login, refresh and logout acceptance.
 `node --test scripts/test-auth.mjs` runs isolated DOM/SDK simulations for failure
 handling and async races; it never uses real account credentials.
-Deployment remains a separate explicitly authorized step.
+Production publishing uses the existing Cloudflare Worker and Git integration.
+See [the deployment report](../deploy/preacherman-site/DEPLOYMENT-REPORT.md)
+for the verified domain, commands and release. Pushing `main` now publishes
+automatically; deployment remains a separately authorized action.
 
 Pre-integration Git baseline: `4535774cb163a5e95963aefce79eb5ec87884d55`.
 Restore only this phase's tracked frontend/scripts/docs and generated files from
