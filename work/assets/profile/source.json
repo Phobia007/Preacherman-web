@@ -1,0 +1,12 @@
+{
+  "desktopCommit": "574fc8062e930f87340a9143b8f011b8e10ca1cb",
+  "originalSourceSha256": {
+    "TaskProfileLens.ts": "2fe34a2c47a5b7f829fd84aa49e9b44a0798717b11737f06ebdd2a1d0659aa3d",
+    "task-profile-source.ts": "2c03154f515f975ed49e581b6e0f4389d8b92721cee6cb19b3a62688e614571c",
+    "MarketProfile.tsx": "8b8bbeb0a9cc1994c8d88cca438cd6559242b2dcd3447a88c9109e11f474fa5a",
+    "market-profile.css": "bfe63d5c258362c907eea1b1d2747433694ae5cf565b05cce38bafccd714867e",
+    "captureMarketFrame.ts": "75dfa03d0e16a37c5558ddd56b64ea3d883c7d8c4ab3e3be5a3e99994e9ffef1"
+  },
+  "fontSha256": "85b84cae419c7a78b52962e40b9e20cc082bd26c321d9e1718750f6cac3c2320",
+  "adaptation": "Original shader math/settings/ease and alpha compositing retained. Website DOM capture, dialog lifecycle, responsive size, language and theme integration are local."
+}

@@ -15,6 +15,20 @@ function read(file) {
   return fs.readFileSync(file, "utf8");
 }
 
+const avatarSource = JSON.parse(read(path.join(root, "work/assets/pathfinder/source.json")));
+const avatarBytes = fs.readFileSync(path.join(root, "work/assets/pathfinder/pathfinder-runtime.glb"));
+if (createHash("sha256").update(avatarBytes).digest("hex") !== avatarSource.sha256 ||
+    avatarBytes.toString("ascii", 0, 4) !== "glTF" || avatarBytes.readUInt32LE(4) !== 2 ||
+    avatarBytes.readUInt32LE(8) !== avatarBytes.length) {
+  throw new Error("Pathfinder must match the independently copied desktop asset");
+}
+const avatarJsonLength = avatarBytes.readUInt32LE(12);
+const avatar = JSON.parse(avatarBytes.toString("utf8", 20, 20 + avatarJsonLength));
+if (!avatar.animations?.some(clip => clip.name === avatarSource.animation) ||
+    [...(avatar.buffers || []), ...(avatar.images || [])].some(resource => resource.uri)) {
+  throw new Error("Pathfinder must include its authored animation and all textures locally");
+}
+
 const canonicalHtml = read(canonicalHtmlPath);
 const canonicalAuth = read(canonicalAuthPath);
 const html = read(builtHtmlPath);
@@ -36,9 +50,9 @@ for (const directory of ["dist", "deploy/preacherman-site/public"]) {
     throw new Error(`Unexpected or missing published files in ${directory}; review without deleting unrelated files.`);
   }
   for (const [source, target] of frontendAssets) {
-    const content = read(path.join(root, directory, target));
-    if (content !== read(path.join(root, source))) throw new Error(`${directory}/${target} differs from source`);
-    published.push([`${directory}/${target}`, content]);
+    const bytes = fs.readFileSync(path.join(root, directory, target));
+    if (!bytes.equals(fs.readFileSync(path.join(root, source)))) throw new Error(`${directory}/${target} differs from source`);
+    if (!/\.(?:glb|webp|woff2|mp4)$/.test(target)) published.push([`${directory}/${target}`, bytes.toString("utf8")]);
   }
 }
 
@@ -165,7 +179,7 @@ const secretPatterns = [
   /["'](?:database[_-]?password|admin[_-]?password)["']\s*:/i,
 ];
 const applicationSources = [
-  ...frontendAssets.map(([source]) => source),
+  ...frontendAssets.map(([source]) => source).filter(source => !/\.(?:glb|webp|woff2|mp4)$/.test(source)),
   ...fs.readdirSync(path.join(root, "scripts"))
     .filter((file) => file.endsWith(".mjs")).map((file) => `scripts/${file}`),
 ];
@@ -190,7 +204,7 @@ for (const [file, content] of [
 
 const externalResources = [...html.matchAll(/<(?:script|img|link)\b[^>]+(?:src|href)="([^"]+)"/gi)]
   .map((match) => match[1])
-  .filter((reference) => !reference.startsWith("data:") && !authScriptPaths.includes(reference));
+  .filter((reference) => !reference.startsWith("data:") && !frontendAssets.some(([, target]) => reference === `/${target}`));
 if (externalResources.length) {
   throw new Error(`Build contains unexpected external resources: ${externalResources.join(", ")}`);
 }

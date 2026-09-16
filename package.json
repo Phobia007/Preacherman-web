@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "node scripts/dev-server.mjs",
     "dev:local": "node scripts/dev-local.mjs",
-    "typecheck": "node --check work/preacherman-auth.js && node --check scripts/dev-server.mjs && node --check scripts/dev-local.mjs && node --check scripts/build-frontend.mjs && node --check scripts/smoke-check-frontend.mjs",
+    "typecheck": "node --check work/preacherman-films.js && node --check work/preacherman-profile.js && node --check work/profile-capture.js && node --check work/profile-lens.js && node --check work/profile-shader.js && node --check work/preacherman-hero.js && node --check work/preacherman-auth.js && node --check scripts/dev-server.mjs && node --check scripts/dev-local.mjs && node --check scripts/build-frontend.mjs && node --check scripts/smoke-check-frontend.mjs",
     "smoke": "node scripts/smoke-check-frontend.mjs",
     "build": "node scripts/build-frontend.mjs"
   }

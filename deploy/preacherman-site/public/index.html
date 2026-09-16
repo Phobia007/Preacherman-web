@@ -5,7 +5,7 @@
   Authentication behavior is loaded from /preacherman-auth.js.
   Generate dist/index.html only with npm run build; never edit dist directly.
 +-->
-<html lang="en">
+<html lang="en" class="is-night-theme">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -287,12 +287,20 @@ body {
 }
 
 .hero {
-  position: relative;
+  position: sticky;
+  top: 0;
   isolation: isolate;
   min-height: 100vh;
   min-height: 100svh;
   padding: 0 var(--page-gutter);
   text-align: center;
+  opacity: 1;
+  transition: opacity 280ms ease;
+}
+
+.hero.is-showcase-active {
+  opacity: 0;
+  pointer-events: none;
 }
 
 .hero__depth-stage {
@@ -648,11 +656,14 @@ html[data-language="zh"] .hero__tagline {
   outline-offset: 0.35rem;
 }
 
+/* Share the hero viewport so the first scroll reveals the opening panel. */
 .showcase-sequence {
   position: relative;
   height: 400vh;
   height: 400svh;
-  background: var(--page-bg);
+  margin-top: -100vh;
+  margin-top: -100svh;
+  pointer-events: none;
 }
 
 .showcase-sequence__viewport {
@@ -1177,7 +1188,8 @@ html[data-language="zh"] .site-footer__brand-name {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .showcase-sequence__panel {
+  .hero,
+  .showcase-sequence .showcase-sequence__panel {
     transition: none;
   }
 
@@ -3724,13 +3736,19 @@ html.is-night-theme .site-footer {
 
 </style>
     <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjEyIiBoZWlnaHQ9IjI0MCIgdmlld0JveD0iMCAwIDIxMiAyNDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik0yMi4zMjggMTAuNTk4NEMyMi4wNjg5IDEwLjU5MTkgMjEuODE1MyAxMC42OTAzIDIxLjYyMzEgMTAuODY4NkMyMS40MzA5IDExLjA0NyAyMS4zMTU5IDExLjI5MDggMjEuMzAzMyAxMS41NDk2QzIxLjI5MDcgMTEuODA4NCAyMS4zODEzIDEyLjA2MjEgMjEuNTU1MiAxMi4yNTg1QzIxLjcyOTEgMTIuNDU0NiAyMS45NzE5IDEyLjU3NzMgMjIuMjMwNSAxMi41OTZDMjIuMjMwNSAxMi41OTYgMjIuMjMwNSAxMi41OTYgMjIuMjMwNSAxMi41OTZDMjguNDIxNCAxMy4wMzg5IDM0LjQ1NjUgMTMuNTg3MyA0MC4zMzMzIDE0LjIzMDZDODIuMjQ0NyAxOC45ODI5IDEyMy45NzggMjguMTM4OCAxNjAuNjkxIDQ3LjMxNzhDMTcxLjEzNyA1Mi45NjY4IDE4MS4zMDIgNTkuNTUzNyAxODguOTgxIDY4LjA1NjNDMTkyLjQ3NiA3MS45NDM1IDE5NS42MjIgNzYuNzY1NSAxOTYuNzI2IDgxLjM0NzFDMTk3LjczMiA4NS4zMDMxIDE5Ny4yNDEgODkuMjUyMiAxOTUuMTgzIDkyLjYwNzNDMTkzLjAxOCA5Ni4xNjAzIDE4OS44NTUgOTkuMjQyNCAxODUuNTIzIDEwMS43MDNDMTUyLjY1NSAxMTcuMTMxIDExMi4wMSAxMTIuMTUgNzQuNTkwMiAxMDcuMTQ2QzY4LjgyNTggMTA2LjI3OCA2Mi44NTMxIDEwNS4yNzcgNTYuNjcwNiAxMDQuMTM2QzU2LjE1NjYgMTA0LjA0MiA1NS42MjI2IDEwNC4xNTcgNTUuMTg2OSAxMDQuNDUyQzU0Ljc1MTEgMTA0Ljc0OCA1NC40NDk0IDEwNS4xOTkgNTQuMzQ3MiAxMDUuNzEyQzU0LjI0NDkgMTA2LjIyNCA1NC4zNTAzIDEwNi43NTcgNTQuNjM5MiAxMDcuMTk3QzU0LjkyODIgMTA3LjYzNyA1NS4zNzcgMTA3Ljk0OSA1NS44ODc5IDEwOC4wNTlDNTUuODg3OSAxMDguMDU5IDU1Ljg4NzkgMTA4LjA1OSA1NS44ODc5IDEwOC4wNTlDNjIuMDc1IDEwOS4zODYgNjguMDU5OCAxMTAuNTczIDczLjg0NDYgMTExLjYyN0MxMTEuNzcgMTE3LjU2NiAxNTEuMzI2IDEyNC44IDE4OS4zMzMgMTA4LjczN0MxOTQuNTEyIDEwNS45NzYgMTk5LjQxNCAxMDIuODc0IDIwMi44OTEgOTcuMjUzNEMyMDYuMiA5Mi4wMTE0IDIwNy4wMDcgODQuOTE5MSAyMDUuNDYzIDc5LjE4NDlDMjAzLjc4OSA3Mi40NDc3IDE5OS43NDYgNjYuNjA4NSAxOTUuNjk3IDYyLjA2NTNDMTg2Ljc2MyA1Mi4yMTU4IDE3NS44NzMgNDUuMzIwMyAxNjQuNzIyIDM5LjU5NDFDMTI1LjY2OSAyMC4zODc4IDgyLjkwOTEgMTQuMDE5MiA0MC41NzI0IDExLjM1MjRDMzQuNjM2NyAxMS4wMTQ1IDI4LjU1NSAxMC43NjIgMjIuMzI4IDEwLjU5ODRaIiBmaWxsPSJibGFjayIvPgo8cGF0aCBkPSJNMTY3LjQ2MiAxMTkuMTAxQzE2Ny4zMTYgMTE4LjU4OSAxNjcuMzg0IDExOC4wNiAxNjcuNjYxIDExNy42M0MxNjcuOTM3IDExNy4yIDE2OC4zOTkgMTE2LjkwMyAxNjguOTM1IDExNi44MDhDMTY5LjQ3MiAxMTYuNzEyIDE3MC4wMzcgMTE2LjgyNSAxNzAuNDk4IDExNy4xMjRDMTcwLjk1OSAxMTcuNDIyIDE3MS4yNzcgMTE3Ljg4MiAxNzEuMzkyIDExOC40QzE3MS4zOTIgMTE4LjQgMTcxLjM5MiAxMTguNCAxNzEuMzkyIDExOC40QzE3MS41MTMgMTE4Ljk0NyAxNzEuNjM0IDExOS40OTMgMTcxLjc1NSAxMjAuMDM5QzE3My45MzUgMTI5Ljg3NCAxNzYuMTE1IDEzOS43MDggMTc4LjI5NSAxNDkuNTQyQzE3OC40MTYgMTUwLjA4OSAxNzguNTM3IDE1MC42MzUgMTc4LjY1OCAxNTEuMTgxQzE3OC43MTQgMTUxLjQzMyAxNzguNjY0IDE1MS42OTIgMTc4LjUyNSAxNTEuOTAyQzE3OC4zODUgMTUyLjExMiAxNzguMTY3IDE1Mi4yNTUgMTc3LjkxNSAxNTIuM0MxNzcuNjYyIDE1Mi4zNDUgMTc3LjM5MyAxNTIuMjg5IDE3Ny4xNjQgMTUyLjE0NUMxNzYuOTM1IDE1Mi4wMDEgMTc2Ljc2NCAxNTEuNzgxIDE3Ni42OTQgMTUxLjUzMkMxNzYuNjk0IDE1MS41MzIgMTc2LjY5NCAxNTEuNTMyIDE3Ni42OTQgMTUxLjUzMkMxNzYuNTQgMTUwLjk5MSAxNzYuMzg2IDE1MC40NTEgMTc2LjIzMiAxNDkuOTFDMTczLjQ2MyAxNDAuMTgxIDE3MC42OTMgMTMwLjQ1MiAxNjcuOTI0IDEyMC43MjNDMTY3Ljc3IDEyMC4xODIgMTY3LjYxNiAxMTkuNjQyIDE2Ny40NjIgMTE5LjEwMVoiIGZpbGw9ImJsYWNrIi8+CjxwYXRoIGQ9Ik0xNjIuMTQ1IDc4LjI3MUMxNjEuODY2IDc3LjMxNDcgMTYxLjIxOSA3Ni41MDI3IDE2MC4zNDUgNzYuMDEzN0MxNTkuNDcxIDc1LjUyNDcgMTU4LjQ0MiA3NS4zOTg3IDE1Ny40ODUgNzUuNjYzNUMxNTYuNTI4IDc1LjkyODIgMTU1LjcyMSA3Ni41NjIgMTU1LjI0MSA3Ny40MjU1QzE1NC43NjIgNzguMjg4OSAxNTQuNjQ5IDc5LjMxMTIgMTU0LjkyOCA4MC4yNjc1QzE1NC45MjggODAuMjY3NSAxNTQuOTI4IDgwLjI2NzUgMTU0LjkyOCA4MC4yNjc1QzE1NS4wNDUgODAuNjcwMSAxNTUuMTYyIDgxLjA3MjcgMTU1LjI4IDgxLjQ3NTNDMTU1LjI4OSA4MS41MDg2IDE1NS4yOTkgODEuNTQyIDE1NS4zMDkgODEuNTc1M0MxNTYuNDYxIDg1LjQ5NjcgMTU4LjA5IDg5LjI4NTkgMTU5LjU0MSA5My4xMjQzQzE2MC45OTMgOTYuOTYyNyAxNjIuNTQgMTAwLjc3NSAxNjQuMDUzIDEwNC41OTZDMTY0LjIyMSAxMDUuMDIxIDE2NC4zODkgMTA1LjQ0NSAxNjQuNTU2IDEwNS44N0MxNjQuNzA2IDEwNi4yNDggMTY1LjAxNSAxMDYuNTY0IDE2NS4zOTUgMTA2Ljc1NUMxNjUuNzc2IDEwNi45NDYgMTY2LjE5NyAxMDYuOTk2IDE2Ni41ODYgMTA2Ljg4OUMxNjYuOTc2IDEwNi43ODEgMTY3LjMwNyAxMDYuNTIzIDE2Ny41MjggMTA2LjE2NUMxNjcuNzQ5IDEwNS44MDggMTY3Ljg0MSAxMDUuMzgxIDE2Ny43NjQgMTA0Ljk4M0MxNjcuNzY0IDEwNC45ODMgMTY3Ljc2NCAxMDQuOTgzIDE2Ny43NjQgMTA0Ljk4M0MxNjcuNjc3IDEwNC41MzYgMTY3LjU5MSAxMDQuMDg5IDE2Ny41MDUgMTAzLjY0MUMxNjYuNzMxIDk5LjYxNTQgMTY1Ljk5MSA5NS41ODAzIDE2NS4xNTUgOTEuNTcxNUMxNjQuMzE5IDg3LjU2MjcgMTYzLjY2MSA4My41MDQ4IDE2Mi41MjYgNzkuNTc4OUMxNjIuNTE2IDc5LjU0NTUgMTYyLjUwNyA3OS41MTIyIDE2Mi40OTcgNzkuNDc4OEMxNjIuMzggNzkuMDc2MiAxNjIuMjYyIDc4LjY3MzYgMTYyLjE0NSA3OC4yNzFaIiBmaWxsPSJibGFjayIvPgo8cGF0aCBkPSJNMTYxLjYyMyA4MC4xNTJDMTYxLjk5NyA3OS4xNTI2IDE2MS45NDkgNzguMDgyMyAxNjEuNDY5IDc3LjE3MTJDMTYwLjk5IDc2LjI2MDUgMTYwLjExOCA3NS41ODM2IDE1OS4wNjYgNzUuMjk0OEMxNTguMDEzIDc1LjAwNTkgMTU2Ljg3MSA3NS4xMzAzIDE1NS45MDkgNzUuNjQ1OEMxNTQuOTQ3IDc2LjE2MSAxNTQuMjQ0IDc3LjAyNTEgMTUzLjkzNiA3OC4wNDI3QzE1My45MzYgNzguMDQyNyAxNTMuOTM2IDc4LjA0MjcgMTUzLjkzNiA3OC4wNDI3QzE1My40ODQgNzkuNTMzNCAxNTMuMDMyIDgxLjAyNCAxNTIuNTggODIuNTE0N0MxNDQuNDQ5IDEwOS4zNDYgMTM2LjMxNyAxMzYuMTc4IDEyOC4xODUgMTYzLjAxQzEyNy43MzMgMTY0LjUgMTI3LjI4MiAxNjUuOTkxIDEyNi44MyAxNjcuNDgyQzEyNi43NTUgMTY3LjcyOCAxMjYuNzg0IDE2Ny45OTIgMTI2LjkwNiAxNjguMjE0QzEyNy4wMjggMTY4LjQzNiAxMjcuMjMzIDE2OC41OTggMTI3LjQ3OSAxNjguNjY2QzEyNy43MjYgMTY4LjczNCAxMjcuOTk2IDE2OC43MDIgMTI4LjIzNSAxNjguNTc5QzEyOC40NzQgMTY4LjQ1NSAxMjguNjYxIDE2OC4yNTEgMTI4Ljc1MiAxNjguMDA5QzEyOC43NTIgMTY4LjAwOSAxMjguNzUyIDE2OC4wMDkgMTI4Ljc1MiAxNjguMDA5QzEyOS4zIDE2Ni41NDUgMTI5Ljg0NyAxNjUuMDggMTMwLjM5NSAxNjMuNjE2QzE0MC4yNTcgMTM3LjI1OSAxNTAuMTE4IDExMC45MDIgMTU5Ljk3OSA4NC41NDQ5QzE2MC41MjcgODMuMDgwNiAxNjEuMDc1IDgxLjYxNjMgMTYxLjYyMyA4MC4xNTJaIiBmaWxsPSJibGFjayIvPgo8cGF0aCBkPSJNMTE2LjU4MyAxMjAuMjc5QzExNi4zODUgMTE5LjUwNiAxMTUuODg1IDExOC44MzUgMTE1LjE3NSAxMTguNDE4QzExNC40NjYgMTE4IDExMy42MDUgMTE3Ljg3IDExMi44IDExOC4wNTFDMTExLjk5NiAxMTguMjMzIDExMS4zMTggMTE4LjcxMSAxMTAuOTM2IDExOS4zNzVDMTEwLjU1MiAxMjAuMDQgMTEwLjQ5NSAxMjAuODM3IDExMC43NTggMTIxLjU5NUMxMTAuNzU4IDEyMS41OTUgMTEwLjc1OCAxMjEuNTk1IDExMC43NTggMTIxLjU5NUMxMTEuMDI2IDEyMi4zNjggMTExLjI5MyAxMjMuMTQxIDExMS41NjEgMTIzLjkxM0MxMTYuMzggMTM3LjgyNCAxMjEuMTk4IDE1MS43MzUgMTI2LjAxNyAxNjUuNjQ2QzEyNi4yODUgMTY2LjQxOSAxMjYuNTUyIDE2Ny4xOTIgMTI2LjgyIDE2Ny45NjVDMTI2LjkwNCAxNjguMjA3IDEyNy4wODYgMTY4LjQxNyAxMjcuMzIgMTY4LjU0OUMxMjcuNTU1IDE2OC42ODEgMTI3LjgyMiAxNjguNzI0IDEyOC4wNjkgMTY4LjY2OEMxMjguMzE3IDE2OC42MTMgMTI4LjUyNSAxNjguNDYyIDEyOC42NTUgMTY4LjI0N0MxMjguNzg1IDE2OC4wMzMgMTI4LjgyNSAxNjcuNzczIDEyOC43NjIgMTY3LjUyNkMxMjguNzYyIDE2Ny41MjYgMTI4Ljc2MiAxNjcuNTI2IDEyOC43NjIgMTY3LjUyNkMxMjguNTU5IDE2Ni43MzkgMTI4LjM1NiAxNjUuOTUxIDEyOC4xNTMgMTY1LjE2NEMxMjQuNDk5IDE1MC45OSAxMjAuODQ2IDEzNi44MTUgMTE3LjE5MiAxMjIuNjQxQzExNi45ODkgMTIxLjg1NCAxMTYuNzg2IDEyMS4wNjYgMTE2LjU4MyAxMjAuMjc5WiIgZmlsbD0iYmxhY2siLz4KPHBhdGggZD0iTTk4LjgxNzQgNTUuMzU2N0M5OC40MDAxIDUzLjgxNjIgOTcuMzkxNSA1Mi41MzI4IDk1Ljk2MzMgNTEuODA0OEM5NC41MzggNTEuMDc1OSA5Mi44MDk4IDUwLjk2MjIgOTEuMjA5NCA1MS40NzI1Qzg5LjYwOSA1MS45ODI4IDg4LjI4MTkgNTMuMDcwOCA4Ny41NzA2IDU0LjQ4MUM4Ni44NTYzIDU1Ljg5MjIgODYuODE2MSA1Ny41MSA4Ny40MDg0IDU4Ljk5NDdDODcuNDA4NCA1OC45OTQ3IDg3LjQwODQgNTguOTk0NyA4Ny40MDg0IDU4Ljk5NDdDODcuNzM0IDU5LjgxMjggODguMDU5NyA2MC42MzEgODguMzg1MyA2MS40NDkxQzk0LjI0NzEgNzYuMTc1NSAxMDAuMTA5IDkwLjkwMTggMTA1Ljk3IDEwNS42MjhDMTA2LjI5NiAxMDYuNDQ2IDEwNi42MjIgMTA3LjI2NCAxMDYuOTQ3IDEwOC4wODNDMTA3LjIyNyAxMDguNzg0IDEwNy43OTMgMTA5LjM2MiAxMDguNDk1IDEwOS42OTZDMTA5LjIgMTEwLjAzMSAxMDkuOTg0IDExMC4wOTUgMTEwLjY5OSAxMDkuODY3QzExMS40MTQgMTA5LjYzOSAxMTIuMDA4IDEwOS4xMzUgMTEyLjM3NSAxMDguNDU5QzExMi43NDEgMTA3Ljc4NCAxMTIuODQ5IDEwNi45OTEgMTEyLjY1MiAxMDYuMjY0QzExMi42NTIgMTA2LjI2NCAxMTIuNjUyIDEwNi4yNjQgMTEyLjY1MiAxMDYuMjY0QzExMi40MjEgMTA1LjQxNSAxMTIuMTkxIDEwNC41NjcgMTExLjk2IDEwMy43MThDMTA3LjgxIDg4LjQ0NjIgMTAzLjY1OSA3My4xNzQxIDk5LjUwOTEgNTcuOTAyQzk5LjI3ODUgNTcuMDUzNiA5OS4wNDggNTYuMjA1MiA5OC44MTc0IDU1LjM1NjdaIiBmaWxsPSJibGFjayIvPgo8cGF0aCBkPSJNOTguNDA3MyA1OC42MTgxQzk4Ljg5NDMgNTcuMTQ2NSA5OC43MjM0IDU1LjU2MjcgOTcuOTcwMiA1NC4yMjU2Qzk3LjIxNjYgNTIuODg4MyA5NS45MzU3IDUxLjkwNTMgOTQuNDE2MSA1MS40OTQ3QzkyLjg5NjQgNTEuMDg0MSA5MS4yNzA3IDUxLjI4MTcgODkuOTAzMiA1Mi4wNDU4Qzg4LjUzNjEgNTIuODEgODcuNTMyNSA1NC4wNzY0IDg3LjE1MTQgNTUuNTc2N0M4Ny4xNTE0IDU1LjU3NjcgODcuMTUxNCA1NS41NzY3IDg3LjE1MTQgNTUuNTc2N0M4Ni42Mzk5IDU3LjU4ODYgODYuMDkzIDU5LjU5MSA4NS41MTA5IDYxLjU4MzhDODUuNTEwOSA2MS41ODM4IDg1LjUxMDkgNjEuNTgzOCA4NS41MTA5IDYxLjU4MzhDODUuMjEgNjIuNjEzOCA4NC45MDk1IDYzLjY0MzggODQuNjA5NSA2NC42NzRDODEuMjkxMyA3Ni4wNjc1IDc4LjAyNTEgODcuNDc1MiA3NC44MTEgOTguODk2OEw3NC44MTk0IDk4Ljg2ODNDNzAuNjU1NiAxMTMuMzY1IDY2LjU3NTggMTI3Ljg4NiA2Mi41Nzk5IDE0Mi40MjlMNjIuNTY5NSAxNDIuNDY1QzU0LjkxNDIgMTcxLjE4OCA0Ny41ODYgMTk5Ljk5OSA0MC41ODQ5IDIyOC44OTdDMzkuODQzNCAyMzEuOTU4IDM5LjEwNTYgMjM1LjAxOSAzOC4zNzE0IDIzOC4wODJDMzguMjgzNCAyMzguNDUgMzguMzMyOSAyMzguODM4IDM4LjUyMSAyMzkuMTY1QzM4LjcwODkgMjM5LjQ5MiAzOS4wMTgxIDIzOS43MzEgMzkuMzgyNyAyMzkuODI4QzM5Ljc0NzQgMjM5LjkyNiA0MC4xNDAyIDIzOS44NzYgNDAuNDc2OSAyMzkuNjg5QzQwLjgxMzcgMjM5LjUwMiA0MS4wNjQ5IDIzOS4xOTQgNDEuMTg3MyAyMzguODM2QzQxLjE4NzMgMjM4LjgzNiA0MS4xODczIDIzOC44MzYgNDEuMTg3MyAyMzguODM2QzQyLjIwNTMgMjM1Ljg0OSA0My4yMTk3IDIzMi44NjIgNDQuMjMwMyAyMjkuODczQzUzLjc3MzEgMjAxLjY1NSA2Mi45ODg3IDE3My4zNSA3MS44NzcyIDE0NC45NTdMNzEuODY2OCAxNDQuOTkyQzc2LjQ4NjggMTMwLjYyMSA4MS4wMjI5IDExNi4yMjcgODUuNDc0OSAxMDEuODA5TDg1LjQ4MzQgMTAxLjc4MUM4OC45MjQ2IDkwLjQyMDMgOTIuMzEzOCA3OS4wNDU5IDk1LjY1MDggNjcuNjU3NUM5NS45NTI2IDY2LjYyNzcgOTYuMjUzOSA2NS41OTc5IDk2LjU1NDggNjQuNTY4Qzk2LjU1NDggNjQuNTY4IDk2LjU1NDggNjQuNTY4IDk2LjU1NDggNjQuNTY4Qzk3LjEzNjkgNjIuNTc1MSA5Ny43NTQ0IDYwLjU5MTggOTguNDA3MyA1OC42MTgxWiIgZmlsbD0iYmxhY2siLz4KPC9zdmc+Cg==" type="image/svg+xml" />
-  </head>
+    <link rel="stylesheet" href="/preacherman-hero.css">
+    <link rel="stylesheet" href="/preacherman-profile.css">
+    <link rel="stylesheet" href="/preacherman-films.css">
+</head>
   <body>
     <header class="site-header">
       <div class="site-header__inner">
-        <a
+        <button
           class="site-brand"
-          href="#"
+          type="button"
+          aria-haspopup="dialog"
+          aria-expanded="false"
+          aria-controls="preacherman-profile"
           aria-label="Preacherman home"
           data-i18n-aria-label="brandHome"
         >
@@ -3743,7 +3761,7 @@ html.is-night-theme .site-footer {
             height="240"
           />
           <span class="site-brand__wordmark">Preacherman</span>
-        </a>
+        </button>
 
         <nav
           id="desktop-navigation-menu"
@@ -4105,6 +4123,14 @@ html.is-night-theme .site-footer {
               <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij4KICA8cGF0aCBmaWxsPSJjdXJyZW50Q29sb3IiIGQ9Ik0xMiAxMWg4LjUzM3EuMDY2LjU3OC4wNjcgMS4xODRjMCAyLjczNC0uOTggNS4wMzYtMi42NzggNi42Yy0xLjQ4NSAxLjM3MS0zLjUxOCAyLjE3NS01Ljk0MiAyLjE3NUE4Ljk3NiA4Ljk3NiAwIDAgMSAzIDExLjk4QTguOTc2IDguOTc2IDAgMCAxIDExLjk4IDNjMi40MiAwIDQuNDUzLjg5IDYuMDA4IDIuMzM5TDE2LjUyNiA2LjhDMTUuMzY4IDUuNjgxIDEzLjgwMyA1IDEyIDVhNyA3IDAgMCAwIDAgMTRjMy41MjcgMCA2LjE0NC0yLjYwOCA2LjU3Ny02SDEyeiIvPgo8L3N2Zz4K" alt="" aria-hidden="true" />
               <span>Google</span>
             </button>
+            <button class="login-form__social" type="button" data-login-provider="github">
+              <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBmaWxsPSJjdXJyZW50Q29sb3IiIGQ9Ik0xMiAuMjk3QzUuMzcgLjI5NyAwIDUuNjcgMCAxMi4yOTdjMCA1LjMwMyAzLjQzOCA5LjggOC4yMDUgMTEuMzg1LjYuMTEzLjgyLS4yNTguODItLjU3NyAwLS4yODUtLjAxLTEuMDQtLjAxNS0yLjA0LTMuMzM4LjcyNC00LjA0My0xLjYxLTQuMDQzLTEuNjEtLjU0Ni0xLjM4Ny0xLjMzMy0xLjc1Ni0xLjMzMy0xLjc1Ni0xLjA5LS43NDUuMDgzLS43MjkuMDgzLS43MjkgMS4yMDUuMDg0IDEuODM4IDEuMjM3IDEuODM4IDEuMjM3IDEuMDcgMS44MzUgMi44MDkgMS4zMDUgMy40OTUuOTk4LjEwOC0uNzc2LjQxOC0xLjMwNS43NjItMS42MDUtMi42NjUtLjMtNS40NjYtMS4zMzQtNS40NjYtNS45MzEgMC0xLjMxLjQ2NS0yLjM4MSAxLjIzNS0zLjIyMS0uMTM1LS4zMDMtLjU0LTEuNTIzLjEwNS0zLjE3NiAwIDAgMS4wMDUtLjMyMiAzLjMgMS4yM2ExMS41IDExLjUgMCAwIDEgMy0uNDA0YzEuMDIuMDA1IDIuMDQ1LjEzOCAzIC40MDQgMi4yOC0xLjU1MiAzLjI4NS0xLjIzIDMuMjg1LTEuMjMuNjQ1IDEuNjUzLjI0IDIuODczLjEyIDMuMTc2Ljc2NS44NCAxLjIzIDEuOTExIDEuMjMgMy4yMjEgMCA0LjYwOS0yLjgwNSA1LjYyNS01LjQ3NSA1LjkyMS40Mi4zNi44MSAxLjA5Ni44MSAyLjIyIDAgMS42MDYtLjAxNSAyLjg5Ni0uMDE1IDMuMjg2IDAgLjMxNS4yMS42OS44MjUuNTdDMjAuNTY1IDIyLjA5MiAyNCAxNy41OTIgMjQgMTIuMjk3YzAtNi42MjctNS4zNzMtMTItMTItMTIiLz48L3N2Zz4=" alt="" aria-hidden="true" />
+              <span>GitHub</span>
+            </button>
+            <button class="login-form__social" type="button" data-login-provider="apple">
+              <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBmaWxsPSJjdXJyZW50Q29sb3IiIGQ9Ik0xNy4wNSAyMC4yOGMtLjk4Ljk1LTIuMDUuOC0zLjA4LjM1LTEuMDktLjQ2LTIuMDktLjQ4LTMuMjQgMC0xLjQ0LjYyLTIuMi40NC0zLjA2LS4zNUMyLjc5IDE1LjI1IDMuNTEgNy41OSA5LjA1IDcuMzFjMS4zNS4wNyAyLjI5Ljc2IDMuMDguODIgMS4xOC0uMjQgMi4zMS0uOTQgMy41Ny0uODUgMS41MS4xMiAyLjY1LjcyIDMuNCAxLjgtMy4xMiAxLjg3LTIuMzggNS45OC40OCA3LjEzLS41NyAxLjUtMS4zMSAyLjk5LTIuNTQgNC4wOGwuMDEtLjAxWk0xMi4wMyA3LjI1QzExLjg4IDUuMDIgMTMuNjkgMy4xOCAxNS43NyAzYy4yOSAyLjU4LTIuMzQgNC41LTMuNzQgNC4yNVoiLz48L3N2Zz4=" alt="" aria-hidden="true" />
+              <span data-i18n="appleLoginProvider">Apple</span>
+            </button>
           </div>
         </form>
       </div>
@@ -4173,10 +4199,10 @@ html.is-night-theme .site-footer {
         </nav>
 
         <button
-          class="navigation-workspace__rail-mark"
+          class="navigation-workspace__rail-mark is-moon"
           type="button"
-          aria-label="Switch to moon icon"
-          aria-pressed="false"
+          aria-label="Switch to sun icon"
+          aria-pressed="true"
         >
           <svg
             class="navigation-workspace__rail-mark-icon navigation-workspace__rail-mark-icon--sun"
@@ -4254,6 +4280,12 @@ html.is-night-theme .site-footer {
 
     <main class="site-content">
       <section class="hero depth-scene" data-hero-depth>
+        <div class="hero__backdrop" aria-hidden="true">
+          <div class="hero__companion" data-pathfinder-stage data-state="loading" data-render-active="false">
+            <img class="hero__companion-poster" src="/assets/pathfinder/pathfinder-poster.webp" alt="" decoding="async" fetchpriority="high">
+          </div>
+          <div class="hero__frost"></div>
+        </div>
         <div class="hero__depth-stage depth-tilt" data-hero-depth-stage>
         <div class="hero__name-position">
         <div class="logo-motion" data-hero-logo-motion>
@@ -4480,12 +4512,15 @@ html.is-night-theme .site-footer {
       <div class="showcase-sequence" data-showcase-sequence>
         <div class="showcase-sequence__viewport">
       <section class="interaction-section showcase-sequence__panel" aria-labelledby="interaction-section-title">
-        <div
-          class="interaction-section__card"
-          role="img"
-          aria-label="Interaction style showcase"
-          data-i18n-aria-label="interactionShowcase"
-        ></div>
+        <div class="interaction-section__card" data-story-film="01" role="group" aria-label="Preacherman concept film 1">
+          <img class="story-film__poster" src="/assets/films/01-dark-start.webp" width="1280" height="800" alt="" decoding="async" aria-hidden="true">
+          <video class="story-film__video" muted playsinline preload="none" width="1280" height="800" aria-hidden="true" tabindex="-1"></video>
+          <button class="story-film__toggle" type="button" data-action="play" aria-label="Play film">
+            <svg data-icon="play" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2l10 6-10 6z"/></svg>
+            <svg data-icon="pause" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 2h3v12H3zm7 0h3v12h-3z"/></svg>
+            <svg data-icon="replay" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 3V0L0 4l3 4V5a5 5 0 1 1 0 6l-1.5 1.2A7 7 0 1 0 3 3z"/></svg>
+          </button>
+        </div>
 
         <div class="interaction-section__intro">
           <h2
@@ -4512,24 +4547,30 @@ html.is-night-theme .site-footer {
           </h2>
         </div>
 
-        <div
-          class="update-section__card completion-section__card"
-          role="img"
-          aria-label="Task completion showcase"
-          data-i18n-aria-label="completionShowcase"
-        ></div>
+        <div class="update-section__card completion-section__card" data-story-film="02" role="group" aria-label="Preacherman concept film 2">
+          <img class="story-film__poster" src="/assets/films/02-dark-start.webp" width="1280" height="800" alt="" decoding="async" aria-hidden="true">
+          <video class="story-film__video" muted playsinline preload="none" width="1280" height="800" aria-hidden="true" tabindex="-1"></video>
+          <button class="story-film__toggle" type="button" data-action="play" aria-label="Play film">
+            <svg data-icon="play" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2l10 6-10 6z"/></svg>
+            <svg data-icon="pause" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 2h3v12H3zm7 0h3v12h-3z"/></svg>
+            <svg data-icon="replay" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 3V0L0 4l3 4V5a5 5 0 1 1 0 6l-1.5 1.2A7 7 0 1 0 3 3z"/></svg>
+          </button>
+        </div>
       </section>
 
       <section
         class="interaction-section ownership-section showcase-sequence__panel"
         aria-labelledby="ownership-section-title"
       >
-        <div
-          class="interaction-section__card ownership-section__card"
-          role="img"
-          aria-label="Digital property showcase"
-          data-i18n-aria-label="propertyShowcase"
-        ></div>
+        <div class="interaction-section__card ownership-section__card" data-story-film="03" role="group" aria-label="Preacherman concept film 3">
+          <img class="story-film__poster" src="/assets/films/03-dark-start.webp" width="1280" height="800" alt="" decoding="async" aria-hidden="true">
+          <video class="story-film__video" muted playsinline preload="none" width="1280" height="800" aria-hidden="true" tabindex="-1"></video>
+          <button class="story-film__toggle" type="button" data-action="play" aria-label="Play film">
+            <svg data-icon="play" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2l10 6-10 6z"/></svg>
+            <svg data-icon="pause" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 2h3v12H3zm7 0h3v12h-3z"/></svg>
+            <svg data-icon="replay" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 3V0L0 4l3 4V5a5 5 0 1 1 0 6l-1.5 1.2A7 7 0 1 0 3 3z"/></svg>
+          </button>
+        </div>
 
         <div class="interaction-section__intro">
           <h2
@@ -4537,7 +4578,7 @@ html.is-night-theme .site-footer {
             class="interaction-section__title"
             data-i18n="ownProperty"
           >
-            Own Your Tokens as Property
+            Your Property
           </h2>
         </div>
       </section>
@@ -4552,16 +4593,19 @@ html.is-night-theme .site-footer {
             class="update-section__title"
             data-i18n="highlyAdaptable"
           >
-            Highly Adaptable
+            Continuity
           </h2>
         </div>
 
-        <div
-          class="update-section__card adaptability-section__card"
-          role="img"
-          aria-label="Adaptability showcase"
-          data-i18n-aria-label="adaptabilityShowcase"
-        ></div>
+        <div class="update-section__card adaptability-section__card" data-story-film="04" role="group" aria-label="Preacherman concept film 4">
+          <img class="story-film__poster" src="/assets/films/04-dark-start.webp" width="1280" height="800" alt="" decoding="async" aria-hidden="true">
+          <video class="story-film__video" muted playsinline preload="none" width="1280" height="800" aria-hidden="true" tabindex="-1"></video>
+          <button class="story-film__toggle" type="button" data-action="play" aria-label="Play film">
+            <svg data-icon="play" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2l10 6-10 6z"/></svg>
+            <svg data-icon="pause" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 2h3v12H3zm7 0h3v12h-3z"/></svg>
+            <svg data-icon="replay" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 3V0L0 4l3 4V5a5 5 0 1 1 0 6l-1.5 1.2A7 7 0 1 0 3 3z"/></svg>
+          </button>
+        </div>
       </section>
         </div>
       </div>
@@ -5368,7 +5412,7 @@ lucide.createIcons({icons});\``);if(typeof c>"u")throw new Error("`createIcons()
     en: {
       pageTitle: "Preacherman",
       metaDescription: "The opening scene of the new Preacherman website.",
-      brandHome: "Preacherman home",
+      brandHome: "About Preacherman",
       primaryNavigation: "Primary navigation",
       mobileNavigation: "Mobile navigation",
       languageAndAccount: "Language and account",
@@ -5420,6 +5464,7 @@ lucide.createIcons({icons});\``);if(typeof c>"u")throw new Error("`createIcons()
       noAccount: "Don't have an account?",
       signUp: "Sign Up",
       orWith: "Or With",
+      appleLoginProvider: "Apple",
       menuOpen: "MENU",
       menuClose: "CLOSE",
       tryPreacherman: "Try Preacherman",
@@ -5436,8 +5481,8 @@ lucide.createIcons({icons});\``);if(typeof c>"u")throw new Error("`createIcons()
       stateEngineDecoupled: "State and engine decoupled",
       completionShowcase: "Task completion showcase",
       propertyShowcase: "Digital property showcase",
-      ownProperty: "Own Your Tokens as Property",
-      highlyAdaptable: "Highly Adaptable",
+      ownProperty: "Your Property",
+      highlyAdaptable: "Continuity",
       adaptabilityShowcase: "Adaptability showcase",
       statement: "Find and Build a Second You Here.",
       statementWords: ["Find", "and", "Build", "a", "Second", "You", "Here."],
@@ -5453,9 +5498,10 @@ lucide.createIcons({icons});\``);if(typeof c>"u")throw new Error("`createIcons()
       marketplaceRules: "Marketplace rules",
     },
     zh: {
+      appleLoginProvider: "苹果",
       pageTitle: "Preacherman｜官方网站",
       metaDescription: "Preacherman 新官方网站首页。",
-      brandHome: "Preacherman 首页",
+      brandHome: "关于 Preacherman",
       primaryNavigation: "主导航",
       mobileNavigation: "移动端导航",
       languageAndAccount: "语言与账户",
@@ -5519,12 +5565,12 @@ lucide.createIcons({icons});\``);if(typeof c>"u")throw new Error("`createIcons()
       downloadIntelMac: "下载 Intel Mac 版本",
       newUpdate: "全新更新",
       interactionShowcase: "全新交互方式展示",
-      newInteractionStyle: "崭新的交互方式",
+      newInteractionStyle: "圈地自“营”",
       stateEngineDecoupled: "状态与引擎解耦",
       completionShowcase: "任务完成方式展示",
       propertyShowcase: "数字资产展示",
-      ownProperty: "真正拥有\n你的数字资产",
-      highlyAdaptable: "高适配性",
+      ownProperty: "你的资产",
+      highlyAdaptable: "持续存在",
       adaptabilityShowcase: "适配能力展示",
       statement: "在这里发现并构建第二个你",
       statementWords: ["在这里", "发现", "并", "构建", "第二个", "你"],
@@ -6207,6 +6253,9 @@ lucide.createIcons({icons});\``);if(typeof c>"u")throw new Error("`createIcons()
     event.preventDefault();
     closeDesktopNavigation();
     closeMobileMenu();
+    closeNavigationWorkspace();
+    closeLoginPanel();
+    window.dispatchEvent(new CustomEvent("preacherman:profile-toggle"));
   });
 
   document.addEventListener("click", (event) => {
@@ -6283,6 +6332,7 @@ lucide.createIcons({icons});\``);if(typeof c>"u")throw new Error("`createIcons()
   });
 
   if (showcaseSequence && showcasePanels.length) {
+    const introHero = document.querySelector(".hero");
     let activeShowcaseIndex = -1;
     let showcaseFrame = 0;
 
@@ -6313,7 +6363,12 @@ lucide.createIcons({icons});\``);if(typeof c>"u")throw new Error("`createIcons()
       showcaseFrame = 0;
 
       const bounds = showcaseSequence.getBoundingClientRect();
-      if (bounds.top > 0 || bounds.bottom <= 0) {
+      const hasEnteredShowcase = bounds.top < 0;
+      if (introHero) {
+        introHero.classList.toggle("is-showcase-active", hasEnteredShowcase);
+        introHero.inert = hasEnteredShowcase;
+      }
+      if (!hasEnteredShowcase || bounds.bottom <= 0) {
         setActiveShowcase(-1);
         return;
       }
@@ -6692,5 +6747,15 @@ lucide.createIcons({icons});\``);if(typeof c>"u")throw new Error("`createIcons()
         window.addEventListener("scroll", refreshBounds, { passive: true });
       })();
     </script>
+    <dialog id="preacherman-profile" class="brand-profile" aria-label="About Preacherman" data-phase="closed">
+      <div class="brand-profile__lens" aria-hidden="true"></div>
+      <button class="brand-profile__close" type="button" autofocus>Close</button>
+      <section class="brand-profile__content">
+        <p><span>A vessel for intelligence</span><span>Preacherman brings your virtual character assets together, connecting engines and real tools to get things done.</span><span>Manage an AI that keeps learning, can be deployed, and takes action.</span><span>Your trusted second identity in the virtual world</span></p>
+      </section>
+    </dialog>
+    <script type="module" src="/preacherman-hero.js"></script>
+    <script type="module" src="/preacherman-profile.js"></script>
+    <script type="module" src="/preacherman-films.js"></script>
   </body>
 </html>

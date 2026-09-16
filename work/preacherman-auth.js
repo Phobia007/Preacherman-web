@@ -18,7 +18,7 @@
   const switchModeButton = prompt.querySelector("button");
   const divider = form.querySelector(".login-form__divider");
   const socials = form.querySelector(".login-form__socials");
-  const google = socials.querySelector(".login-form__social");
+  const socialButtons = socials.querySelectorAll(".login-form__social");
   const panel = document.querySelector("#site-login-panel");
   const triggers = [...document.querySelectorAll(".site-utility-button--login")];
 
@@ -572,7 +572,9 @@ XK|383
     message(unavailable);
   });
   forgot.addEventListener("click", () => message(unavailable));
-  google.addEventListener("click", () => message(unavailable));
+  for (const button of socialButtons) {
+    button.addEventListener("click", () => message(unavailable));
+  }
 
   form.addEventListener("submit", async (event) => {
     event.preventDefault();

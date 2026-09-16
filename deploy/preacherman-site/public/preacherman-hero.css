@@ -1,0 +1,63 @@
+/* The same 12px scene frost used by desktop Settings; foreground stays sharp. */
+:root {
+  --hero-glass-tint: rgba(var(--page-rgb), 0.24);
+  --hero-companion-opacity: 0.8;
+}
+
+html.is-night-theme {
+  --hero-glass-tint: rgba(var(--page-rgb), 0.12);
+  --hero-companion-opacity: 1;
+}
+
+/* Share the hero's frosted scene all the way to the top edge. Other header
+   states retain their existing opaque surface for navigation/readability. */
+html body:not(.is-navigation-locked):not(.is-navigation-workspace-open):not(.is-login-panel-open) .site-header:not(.is-scrolled):not(.is-desktop-menu-open):not(.is-mobile-open) {
+  background-color: transparent;
+  border-bottom-color: transparent;
+}
+
+.hero__backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.hero__companion {
+  position: absolute;
+  inset: -16px;
+  filter: blur(12px);
+  opacity: var(--hero-companion-opacity);
+}
+
+.hero__companion canvas,
+.hero__companion-poster {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.hero__companion-poster {
+  object-fit: contain;
+}
+
+.hero__companion canvas {
+  opacity: 0;
+  transition: opacity 400ms ease;
+}
+
+.hero__companion[data-state="ready"] canvas { opacity: 1; }
+.hero__companion[data-state="ready"] .hero__companion-poster { visibility: hidden; }
+
+.hero__frost {
+  position: absolute;
+  inset: 0;
+  background: var(--hero-glass-tint);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__companion canvas { transition: none; }
+}

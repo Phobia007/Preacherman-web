@@ -1,0 +1,14 @@
+{
+  "desktopCommit": "1eb17c59319340eaaa4a968e65d8602e8b8d44a9",
+  "asset": "apps/preacherman-demo-host/public/assets/avatars/apex-legend-pathfinder/apex-legend-pathfinder-runtime.glb",
+  "sha256": "36507991df9c0ca9503adf6c953e44233fe9b7525a2fba842b4e6e736aa7bfde",
+  "bytes": 14985064,
+  "animation": "apex-legend-pathfinder.idle.happy.v2",
+  "threeVersion": "0.185.1",
+  "desktopSourceSha256": {
+    "packages/preacherman-avatar-renderer/src/HologramLights.tsx": "41aba94643c2ca7c23d83822f4fc5a3c54e56cb9c2db08363fe9a05d62dc66e8",
+    "packages/preacherman-avatar-renderer/src/InteractiveAvatarScene.tsx": "69ffbc87bc312c76d54514aa9293adeaa0d90aa2cfe54a47fd83613a1f88e20d",
+    "packages/preacherman-avatar-renderer/src/avatarCatalog.ts": "b8012ecb00e3012ba98f354f0ca1e4d65d7fc78ffefd3e16543d8a2840a3c500",
+    "apps/preacherman-demo-host/src/settings/settings-menu.css": "3721e491040023884fb2c8d771f7995f7315c45f7fc34acb5e4293ac014620e3"
+  }
+}

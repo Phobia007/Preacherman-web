@@ -6,6 +6,15 @@ For Supabase Email Login Minimal Integration, the canonical frontend consists of
 
 - `work/Preacherman-Standalone.html` — complete current page, embedded visual
   assets, styles, fonts, icons, and original page interactions.
+- `work/preacherman-hero.js`, `work/preacherman-hero.css`, the local Pathfinder GLB/
+  poster in `work/assets/pathfinder/`, and the pinned Three.js vendor bundle provide
+  the frosted hero background. See `work/assets/pathfinder/README.md`.
+- `work/preacherman-profile.js`, its CSS, `profile-capture.js`, `profile-lens.js`,
+  `profile-shader.js` and `work/assets/profile/profile.woff2` provide the bilingual
+  header introduction lens. See `work/assets/profile/README.md`.
+- `work/preacherman-films.js`, `work/preacherman-films.css`, and the MP4/WebP files
+  in `work/assets/films/` provide the four theme-aware showcase films.
+  Only the visible film plays; reduced-motion users see the result poster.
 - `work/preacherman-auth.js` — existing authentication UI, using Supabase email/password login only.
 - `work/preacherman-auth-config.js` — public project URL and publishable key only.
 - `work/vendor/supabase-js-2.116.0.js` and its MIT license — pinned browser SDK;
