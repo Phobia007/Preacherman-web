@@ -46,6 +46,8 @@ function fixture({ configured = true, sdkPresent = true, session = null, verify 
   const trigger = new Element();
   trigger.setAttribute("aria-expanded", "true");
   document.querySelectorAll = () => [trigger];
+  const socialButtons = Array.from({ length: 4 }, () => new Element());
+  document.querySelector(".login-form").querySelector(".login-form__socials").querySelectorAll = () => socialButtons;
   const events = [];
   document.dispatchEvent = (event) => events.push(event);
   let subscriber;
@@ -155,16 +157,16 @@ test("a stale startup response cannot replace a newer login", async () => {
   assert.equal(f.trigger.getAttribute("aria-label"), `Account: ${user.email}`);
 });
 
-test("registration, recovery, Google, phone and scan actions never submit auth requests", async () => {
+test("registration, recovery, all four providers, phone and scan actions never submit auth requests", async () => {
   const f = fixture();
   const controls = [
     f.form.querySelector(".login-form__prompt").querySelector("button"),
     f.form.querySelector(".login-form__options").querySelector(".login-form__text-action"),
-    f.form.querySelector(".login-form__socials").querySelector(".login-form__social"),
+    ...f.form.querySelector(".login-form__socials").querySelectorAll(".login-form__social"),
     f.document.created.find((e) => e.className === "login-form__field login-form__verification").querySelector(".login-form__get-code"),
     f.document.created.find((e) => e.className === "login-form__method-switch").querySelector("button"),
   ];
-  for (const control of controls) { await control.fire("click"); assert.match(f.status(), /暂未开放/); }
+  for (const control of controls) { await control.fire("click"); assert.equal(f.status(), "Not available in this test."); }
   await f.login();
   const corner = f.document.created.find((e) => e.className === "login-scan-corner");
   await corner.fire("click");

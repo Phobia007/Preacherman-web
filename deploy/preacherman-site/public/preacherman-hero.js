@@ -24,6 +24,7 @@ if (stage) {
   const skeletons = new Set();
   const shouldRender = () => ready && !disposed && !contextLost && !document.hidden
     && !hero.classList.contains('is-showcase-active')
+    && !document.body.classList.contains('is-web-app-open')
     && !document.body.classList.contains('is-navigation-locked')
     && !document.body.classList.contains('is-navigation-workspace-open')
     && hero.getBoundingClientRect().bottom > 0;

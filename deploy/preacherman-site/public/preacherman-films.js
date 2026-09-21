@@ -1,14 +1,19 @@
 // Pre-rendered stories: one active player, no new realtime 3D scene.
 const root = document.documentElement;
 const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+const authoredFilms = {
+  '01': '/assets/films/vessel-gallery-23s',
+  '02': '/assets/films/state-engine-24s',
+  '03': '/assets/films/your-property-23s',
+};
 const descriptions = {
-  en: ['Pathfinder establishes a personal workspace with rules and a tool.',
-    'Engine A is replaced by B; Pathfinder and its records remain.',
-    'Pathfinder and its records travel together beyond their original workspace.',
+  en: ['Vessel Your Intelligence — Preacherman Gallery film.',
+    'State and engine decoupled — Settings, Execution Mode, and local agents.',
+    'Your Property — Gallery, digital identity, and managing your assets in Market.',
     'Earlier memories remain while the timeline continues from its bookmark.'],
-  zh: ['Pathfinder 建立自己的空间，规则与工具归位。',
-    '引擎 A 换成 B，Pathfinder 的身份与记录保持不变。',
-    'Pathfinder 与资料一起离开原有空间，作为完整资产被带走。',
+  zh: ['圈地自“营” — Preacherman Gallery 展示影片。',
+    '状态与引擎解耦 — 设置、执行模式与本地智能体。',
+    '你的资产 — Gallery、数字身份与 Market 资产管理。',
     '原有经历保留，时间线从书签处继续延伸。'],
 };
 let suspended = false;
@@ -21,6 +26,7 @@ const entries = [...document.querySelectorAll('[data-story-film]')].map((card, i
   const entry = { card, video, poster, button, index, time: 0, sourceTheme: '',
     done: false, userPaused: false, overrideMotion: false, loading: false, failed: false, timer: 0 };
   video.muted = true;
+  video.loop = card.dataset.storyFilm === '01';
   const onReady = () => {
     if (video.readyState < 2 || !entry.loading) return;
     entry.loading = false;
@@ -67,20 +73,22 @@ function sync() {
   const appearance = theme(), lang = language();
   for (const entry of entries) {
     const { card, video, poster, button } = entry;
-    const stem = `/assets/films/${card.dataset.storyFilm}-${appearance}`;
+    const authoredFilm = authoredFilms[card.dataset.storyFilm];
+    const sourceTheme = authoredFilm || appearance;
+    const stem = authoredFilm || `/assets/films/${card.dataset.storyFilm}-${appearance}`;
     const allowMotion = !reduced.matches || entry.overrideMotion;
     const posterUrl = `${stem}-${allowMotion && !entry.done ? 'start' : 'end'}.webp`;
     if (poster.getAttribute('src') !== posterUrl) poster.src = posterUrl;
     card.setAttribute('aria-label', descriptions[lang][entry.index]);
     const visible = active(entry);
     // Freeze the exact displayed frame before replacing a theme or hiding a panel.
-    if (!visible || entry.sourceTheme !== appearance || entry.userPaused || !allowMotion) {
+    if (!visible || entry.sourceTheme !== sourceTheme || entry.userPaused || !allowMotion) {
       if (!entry.loading && entry.sourceTheme && !entry.done) entry.time = video.currentTime;
       video.pause();
     }
-    if (entry.sourceTheme !== appearance) card.dataset.filmReady = 'false';
-    if (visible && allowMotion && entry.sourceTheme !== appearance && !entry.failed) {
-      entry.sourceTheme = appearance;
+    if (entry.sourceTheme !== sourceTheme) card.dataset.filmReady = 'false';
+    if (visible && allowMotion && entry.sourceTheme !== sourceTheme && !entry.failed) {
+      entry.sourceTheme = sourceTheme;
       entry.loading = true;
       clearTimeout(entry.timer);
       entry.timer = setTimeout(() => {
@@ -90,7 +98,7 @@ function sync() {
       video.load();
     }
     if (!allowMotion) card.dataset.filmReady = 'false';
-    else if (entry.sourceTheme === appearance && !entry.loading && !entry.failed && !video.seeking && video.readyState >= 2) {
+    else if (entry.sourceTheme === sourceTheme && !entry.loading && !entry.failed && !video.seeking && video.readyState >= 2) {
       card.dataset.filmReady = 'true';
     }
     if (visible && allowMotion && !entry.loading && !entry.failed && !entry.done && !entry.userPaused && video.readyState >= 2 && video.paused) {

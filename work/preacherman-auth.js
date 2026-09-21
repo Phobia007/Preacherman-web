@@ -361,7 +361,7 @@ XK|383
       </svg>
     </div>
     <p class="login-scan__instruction">Open your email app and scan this code to sign in.</p>
-    <p class="login-scan__status" role="status" aria-live="polite">本轮测试暂未开放 / Not available in this test.</p>
+    <p class="login-scan__status" role="status" aria-live="polite">${unavailable()}</p>
     <button class="login-form__text-action login-scan__back" type="button">Use email and password</button>`;
   panel.append(scanCorner, scanPanel);
 
@@ -382,15 +382,15 @@ XK|383
   let busy = false;
   let identityRevision = 0;
   let verificationTimer;
-  const unavailable = "本轮测试暂未开放 / Not available in this test.";
+  function unavailable() {
+    return document.documentElement.dataset.language === "zh"
+      ? "本轮测试暂未开放。" : "Not available in this test.";
+  }
   const temporaryError = "暂时无法连接认证服务，请检查网络后重试。 / Authentication service is temporarily unavailable. Please retry.";
   let setupError = "";
 
   remember.checked = true;
   remember.disabled = true;
-  const rememberLabel = remember.parentElement.querySelector("span");
-  rememberLabel.removeAttribute("data-i18n");
-  rememberLabel.textContent = "保持登录（测试版） / Stay signed in";
   remember.parentElement.title = "Supabase persistent session; sign out to end this session.";
 
   function message(text, kind = "info") {
@@ -419,7 +419,7 @@ XK|383
     scanInstruction.textContent = wechat
       ? "Open WeChat and scan this code to sign in."
       : "Open your email app and scan this code to sign in.";
-    scanStatus.textContent = unavailable;
+    scanStatus.textContent = unavailable();
   }
 
   function setScanOpen(open) {
@@ -553,7 +553,7 @@ XK|383
     verificationTimer = setTimeout(() => { void restoreSession(revision); }, 0);
   }
 
-  switchModeButton.addEventListener("click", () => message(unavailable));
+  switchModeButton.addEventListener("click", () => message(unavailable()));
   scanCorner.addEventListener("click", () => setScanOpen(!scanOpen));
   scanBack.addEventListener("click", () => setScanOpen(false));
   for (const tab of scanTabs) {
@@ -561,7 +561,7 @@ XK|383
   }
   methodSwitchButton.addEventListener("click", () => {
     setMode(mode === "phone" ? phoneReturnMode : "phone");
-    message(unavailable);
+    message(unavailable());
     (mode === "phone" ? phoneNumber : email).focus();
   });
   countrySelect.addEventListener("change", () => {
@@ -569,11 +569,11 @@ XK|383
     phoneNumber.focus();
   });
   getCode.addEventListener("click", () => {
-    message(unavailable);
+    message(unavailable());
   });
-  forgot.addEventListener("click", () => message(unavailable));
+  forgot.addEventListener("click", () => message(unavailable()));
   for (const button of socialButtons) {
-    button.addEventListener("click", () => message(unavailable));
+    button.addEventListener("click", () => message(unavailable()));
   }
 
   form.addEventListener("submit", async (event) => {
@@ -583,7 +583,7 @@ XK|383
     message("");
 
     if (mode === "phone" || mode === "register") {
-      message(unavailable);
+      message(unavailable());
       return;
     }
     if (!client) {

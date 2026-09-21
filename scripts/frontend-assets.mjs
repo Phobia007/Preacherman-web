@@ -1,7 +1,18 @@
 // Explicit publish allowlist: source paths relative to the repository root.
 export const frontendAssets = [
+  ["work/assets/films/your-property-23s.mp4", "assets/films/your-property-23s.mp4"],
+  ["work/assets/films/your-property-23s-start.webp", "assets/films/your-property-23s-start.webp"],
+  ["work/assets/films/your-property-23s-end.webp", "assets/films/your-property-23s-end.webp"],
+  ["work/preacherman-entry.js", "preacherman-entry.js"],
+  ["work/preacherman-entry.css", "preacherman-entry.css"],
+  ["work/assets/films/state-engine-24s.mp4", "assets/films/state-engine-24s.mp4"],
+  ["work/assets/films/state-engine-24s-start.webp", "assets/films/state-engine-24s-start.webp"],
+  ["work/assets/films/state-engine-24s-end.webp", "assets/films/state-engine-24s-end.webp"],
   ["work/preacherman-films.js", "preacherman-films.js"],
   ["work/preacherman-films.css", "preacherman-films.css"],
+  ["work/assets/films/vessel-gallery-23s.mp4", "assets/films/vessel-gallery-23s.mp4"],
+  ["work/assets/films/vessel-gallery-23s-start.webp", "assets/films/vessel-gallery-23s-start.webp"],
+  ["work/assets/films/vessel-gallery-23s-end.webp", "assets/films/vessel-gallery-23s-end.webp"],
   ["work/assets/films/01-dark.mp4", "assets/films/01-dark.mp4"],
   ["work/assets/films/01-dark-start.webp", "assets/films/01-dark-start.webp"],
   ["work/assets/films/01-dark-end.webp", "assets/films/01-dark-end.webp"],
