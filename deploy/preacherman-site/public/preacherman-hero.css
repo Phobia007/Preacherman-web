@@ -58,12 +58,23 @@ html body:not(.is-navigation-locked):not(.is-navigation-workspace-open):not(.is-
   background: var(--hero-glass-tint);
 }
 
-/* A frameless action aligned beneath the hero monogram. */
-.hero__try-it {
+/* Paired frameless actions, centered beneath the hero monogram. */
+.hero__entry-actions {
   position: absolute;
   z-index: 3;
   top: 81%;
   left: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(1.5rem, 3vw, 3.75rem);
+  width: max-content;
+  max-width: calc(100% - 2.5rem);
+  transform: translate(-50%, -50%);
+}
+
+.hero__action {
+  position: relative;
   display: inline-flex;
   align-items: center;
   gap: 0.4em;
@@ -80,10 +91,12 @@ html body:not(.is-navigation-locked):not(.is-navigation-workspace-open):not(.is-
   font-weight: 300;
   line-height: 1.2;
   white-space: nowrap;
-  transform: translate(-50%, -50%);
+  flex: 0 0 auto;
+  min-height: 44px;
+  text-decoration: none;
 }
 
-.hero__try-it::after {
+.hero__action::after {
   content: "";
   position: absolute;
   right: 0;
@@ -97,16 +110,16 @@ html body:not(.is-navigation-locked):not(.is-navigation-workspace-open):not(.is-
   pointer-events: none;
 }
 
-.hero__try-it:hover::after,
-.hero__try-it:focus-visible::after {
+.hero__action:hover::after,
+.hero__action:focus-visible::after {
   transform: scaleX(1);
 }
 
-.hero__try-it:focus-visible {
+.hero__action:focus-visible {
   outline: none;
 }
 
-.hero__try-it svg {
+.hero__action svg {
   display: block;
   width: 0.7em;
   height: 0.7em;
@@ -119,5 +132,5 @@ html body:not(.is-navigation-locked):not(.is-navigation-workspace-open):not(.is-
 
 @media (prefers-reduced-motion: reduce) {
   .hero__companion canvas,
-  .hero__try-it::after { transition: none; }
+  .hero__action::after { transition: none; }
 }

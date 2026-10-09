@@ -1,5 +1,10 @@
 // Explicit publish allowlist: source paths relative to the repository root.
 export const frontendAssets = [
+  ["work/preacherman-showcase.js", "preacherman-showcase.js"],
+  ["work/preacherman-showcase.css", "preacherman-showcase.css"],
+  ["work/assets/films/continuity-28s.mp4", "assets/films/continuity-28s.mp4"],
+  ["work/assets/films/continuity-28s-start.webp", "assets/films/continuity-28s-start.webp"],
+  ["work/assets/films/continuity-28s-end.webp", "assets/films/continuity-28s-end.webp"],
   ["work/assets/films/your-property-23s.mp4", "assets/films/your-property-23s.mp4"],
   ["work/assets/films/your-property-23s-start.webp", "assets/films/your-property-23s-start.webp"],
   ["work/assets/films/your-property-23s-end.webp", "assets/films/your-property-23s-end.webp"],

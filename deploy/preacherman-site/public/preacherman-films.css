@@ -40,3 +40,6 @@
 .story-film__toggle[data-action="pause"] [data-icon="pause"],
 .story-film__toggle[data-action="play"] [data-icon="play"],
 .story-film__toggle[data-action="replay"] [data-icon="replay"] { display: block; }
+
+/* Hide the fallback poster once the 16:9 film is ready to avoid a subpixel seam. */
+[data-story-film="04"][data-film-ready="true"] .story-film__poster { visibility: hidden; }

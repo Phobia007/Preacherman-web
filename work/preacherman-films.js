@@ -5,16 +5,17 @@ const authoredFilms = {
   '01': '/assets/films/vessel-gallery-23s',
   '02': '/assets/films/state-engine-24s',
   '03': '/assets/films/your-property-23s',
+  '04': '/assets/films/continuity-28s',
 };
 const descriptions = {
   en: ['Vessel Your Intelligence — Preacherman Gallery film.',
     'State and engine decoupled — Settings, Execution Mode, and local agents.',
     'Your Property — Gallery, digital identity, and managing your assets in Market.',
-    'Earlier memories remain while the timeline continues from its bookmark.'],
+    'Continuity — your identity, memory and history persist beyond any single model.'],
   zh: ['圈地自“营” — Preacherman Gallery 展示影片。',
     '状态与引擎解耦 — 设置、执行模式与本地智能体。',
     '你的资产 — Gallery、数字身份与 Market 资产管理。',
-    '原有经历保留，时间线从书签处继续延伸。'],
+    '持续延续 — 你的身份、记忆与历史，超越任何单一模型而持续存在。'],
 };
 let suspended = false;
 const theme = () => root.classList.contains('is-night-theme') ? 'dark' : 'light';
@@ -63,10 +64,13 @@ const entries = [...document.querySelectorAll('[data-story-film]')].map((card, i
 });
 
 function active(entry) {
-  if (suspended || document.hidden || !entry.card.closest('.is-active')) return false;
-  if (document.body.matches('.is-navigation-workspace-open, .is-navigation-locked, .is-login-panel-open, .is-brand-profile-open')) return false;
+  if (suspended || document.hidden || entry.card.hidden || !entry.card.closest('.is-active')) return false;
+  if (document.body.matches('.is-navigation-workspace-open, .is-navigation-locked, .is-login-panel-open, .is-brand-profile-open, .is-web-app-open')) return false;
   const box = entry.card.getBoundingClientRect();
-  return box.bottom > 0 && box.top < innerHeight;
+  const viewport = entry.card.closest('.pm-showcase__body')?.getBoundingClientRect();
+  const top = Math.max(0, viewport?.top ?? 0);
+  const bottom = Math.min(innerHeight, viewport?.bottom ?? innerHeight);
+  return box.bottom > top && box.top < bottom;
 }
 
 function sync() {
@@ -102,7 +106,7 @@ function sync() {
       card.dataset.filmReady = 'true';
     }
     if (visible && allowMotion && !entry.loading && !entry.failed && !entry.done && !entry.userPaused && video.readyState >= 2 && video.paused) {
-      video.play().then(() => { card.dataset.filmReady = 'true'; updateButton(entry); }).catch(error => {
+      video.play().then(() => { if (!active(entry)) video.pause(); card.dataset.filmReady = 'true'; updateButton(entry); }).catch(error => {
         if (error.name !== 'AbortError') { entry.userPaused = true; updateButton(entry); }
       });
     }
@@ -122,10 +126,14 @@ const observer = new MutationObserver(sync);
 observer.observe(root, { attributes:true, attributeFilter:['class','data-language'] });
 observer.observe(document.body, { attributes:true, attributeFilter:['class'] });
 for (const entry of entries) observer.observe(entry.card.closest('.showcase-sequence__panel'), { attributes:true, attributeFilter:['class'] });
+for (const entry of entries) observer.observe(entry.card, { attributes:true, attributeFilter:['hidden'] });
 let scrollFrame = 0;
 window.addEventListener('scroll', () => {
   if (!scrollFrame) scrollFrame = requestAnimationFrame(() => { scrollFrame = 0; sync(); });
 }, { passive:true });
+document.addEventListener('scroll', event => {
+  if (event.target instanceof Element && event.target.matches('.pm-showcase__body')) sync();
+}, { passive:true, capture:true });
 document.addEventListener('visibilitychange', sync);
 window.addEventListener('resize', sync);
 reduced.addEventListener('change', () => { for (const entry of entries) entry.overrideMotion = false; sync(); });

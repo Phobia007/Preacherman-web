@@ -92,3 +92,9 @@ If the monolithic HTML is split in a later phase:
    visual QA, and the complete test matrix pass.
 8. Archive the superseded source explicitly; do not leave two apparent sources
    of truth.
+
+## Combined showcase (local preview, 2026-10-08)
+
+`work/preacherman-showcase.js` and `.css` provide the second-screen four-story accordion and capsule navigation. The existing films controller loads only the selected, visible film. The capsule appears 500 ms after the second screen finishes entering and remains below the site header within this screen. It uses the canonical appearance and font tokens.
+
+The capsule labels are Why Preacherman, Portfolio, Autonomy, Marketplace, and Get Started (approved 2026-10-09). Descriptive prose remains from the approved local reference. The standalone heading and description links/CTA entries were removed on 2026-10-08. Story headings expand smoothly on selection; description type is larger. Films and posters fill the fixed media frame with centered, proportional cover cropping. Only the first capsule destination is connected; the other four are disabled placeholders for later content. Do not infer routes or navigate to the reference website. No public deployment is part of this change.

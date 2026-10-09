@@ -42,3 +42,20 @@ Both appearances share this authored video. Contain sizing preserves its full
 frame; the existing themed card and playback controls remain. Start and result
 posters are extracted at 0 and 22.43 seconds, before the concluding fade to black.
 The source video and both posters are included in the explicit publish allowlist.
+
+## Continuity — local card 04, 2026-10-02
+
+`continuity-28s.mp4`: 28 seconds, 1920×1080, 30 fps, 840 frames, silent H.264.
+Exported from the approved Remotion composition `Continuity-Preacherman`.
+The calendar advances 90 days per five seconds with actual month/year rollover;
+the original lake lighting independently cycles through day/night every five seconds.
+After 15 seconds the lake blurs while lighting keeps changing, the wheel accelerates,
+and the logo/title fade in. The complete ending holds through 28 seconds.
+
+Final copy: “What is yours, always yours.” and
+“Your identity, memory and history persist beyond any single model.”
+Start/end WebP posters come from the same verified full-resolution render.
+Both appearances share the authored film, preserving the existing themed controls,
+contain sizing, pause/replay, offscreen suspension, and reduced-motion result poster.
+Delivered to the local website opened by `preachermanai.com.lnk`.
+No production publication or Git push is included in this delivery.
