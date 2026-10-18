@@ -10,7 +10,7 @@ const authoredFilms = {
 const descriptions = {
   en: ['Vessel Your Intelligence — Preacherman Gallery film.',
     'State and engine decoupled — Settings, Execution Mode, and local agents.',
-    'Your Property — Gallery, digital identity, and managing your assets in Market.',
+    'Your asset — digital humans, appearance, settings, API access and task lists.',
     'Continuity — your identity, memory and history persist beyond any single model.'],
   zh: ['圈地自“营” — Preacherman Gallery 展示影片。',
     '状态与引擎解耦 — 设置、执行模式与本地智能体。',

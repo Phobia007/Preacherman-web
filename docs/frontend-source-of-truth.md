@@ -93,8 +93,10 @@ If the monolithic HTML is split in a later phase:
 8. Archive the superseded source explicitly; do not leave two apparent sources
    of truth.
 
-## Combined showcase (local preview, 2026-10-08)
+## Combined showcase and navigation (2026-10-17)
 
-`work/preacherman-showcase.js` and `.css` provide the second-screen four-story accordion and capsule navigation. The existing films controller loads only the selected, visible film. The capsule appears 500 ms after the second screen finishes entering and remains below the site header within this screen. It uses the canonical appearance and font tokens.
+`work/preacherman-showcase.js` and `.css` provide the four-story accordion and persistent capsule navigation. Preacherman, Portfolio, Autonomy, Marketplace, and Get Started share the existing sticky viewport and scroll-driven crossfade. Native wheel/touch scrolling, navigation clicks, and section hashes select the same panels. Portfolio, Autonomy, and Marketplace are intentionally empty; Get Started contains the original download section and controls.
 
-The capsule labels are Why Preacherman, Portfolio, Autonomy, Marketplace, and Get Started (approved 2026-10-09). Descriptive prose remains from the approved local reference. The standalone heading and description links/CTA entries were removed on 2026-10-08. Story headings expand smoothly on selection; description type is larger. Films and posters fill the fixed media frame with centered, proportional cover cropping. Only the first capsule destination is connected; the other four are disabled placeholders for later content. Do not infer routes or navigate to the reference website. No public deployment is part of this change.
+The capsule drops immediately from below the site header when entering the sequence, remains visible between destinations, and highlights the current page. On entering Preacherman, copy fades in and the video frame slides from the right. Reduced motion removes these movements. Appearance and typography use the site's existing tokens. The films controller plays only the visible, selected film.
+
+The four story descriptions use the user-approved Chinese copy and corresponding English translations (2026-10-17), connected to the existing language preference. The third title is Your asset. Centered cover cropping and video controls are retained. Description links and the old standalone heading remain removed. Public publishing continues through a separately requested push to main and the existing Cloudflare integration.

@@ -1,12 +1,16 @@
 const showcase = document.querySelector('[data-combined-showcase]');
 if (showcase) {
+  const panels = [...showcase.querySelectorAll('.showcase-sequence__panel')];
   const panel = showcase.querySelector('.pm-showcase');
   const navigation = showcase.querySelector('.pm-showcase__nav');
-  const triggers = [...showcase.querySelectorAll('[data-showcase-trigger]')];
-  const disclosures = [...showcase.querySelectorAll('.pm-showcase__disclosure')];
-  const films = [...showcase.querySelectorAll('[data-story-film]')];
-  let navigationTimer = 0;
-  let entered = false;
+  const links = [...navigation.querySelectorAll('a')];
+  const triggers = [...panel.querySelectorAll('[data-showcase-trigger]')];
+  const disclosures = [...panel.querySelectorAll('.pm-showcase__disclosure')];
+  const films = [...panel.querySelectorAll('[data-story-film]')];
+  const downloads = showcase.querySelector('.statement-section');
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+  let currentIndex = -1;
+  let syncFrame = 0;
 
   function select(index) {
     triggers.forEach((trigger, i) => {
@@ -32,41 +36,74 @@ if (showcase) {
     });
   });
 
-  function hideNavigation() {
-    clearTimeout(navigationTimer);
-    navigationTimer = 0;
-    navigation.classList.remove('is-visible');
-    navigation.inert = true;
-    navigation.setAttribute('aria-hidden', 'true');
+  // Match the canonical scroll controller's thresholds. Jumping the scroll
+  // position lets that controller crossfade directly to the requested page.
+  function goTo(index) {
+    const bounds = showcase.getBoundingClientRect();
+    const step = Math.max(1, bounds.height - innerHeight) / panels.length;
+    window.scrollTo({top: scrollY + bounds.top + index * step + 1, behavior: 'instant'});
   }
-  function syncEntrance() {
-    const active = panel.classList.contains('is-active') && !document.hidden;
-    panel.inert = !active;
-    if (active === entered) return;
-    entered = active;
-    hideNavigation();
-    if (!active) return;
-    // Wait for the screen's existing fade to finish, then hold for 0.5 seconds.
-    const durations = getComputedStyle(panel).transitionDuration.split(',').map(value =>
-      parseFloat(value) * (value.trim().endsWith('ms') ? 1 : 1000));
-    const entryDuration = Math.max(0, ...durations);
-    navigationTimer = setTimeout(() => {
-      if (!entered || document.hidden) return;
-      navigation.classList.add('is-visible');
-      navigation.inert = false;
-      navigation.setAttribute('aria-hidden', 'false');
-    }, entryDuration + 500);
-  }
-  const observer = new MutationObserver(syncEntrance);
-  observer.observe(panel, {attributes: true, attributeFilter: ['class']});
-  document.addEventListener('visibilitychange', syncEntrance);
-  window.addEventListener('pagehide', () => { entered = false; hideNavigation(); });
-  window.addEventListener('pageshow', syncEntrance);
-  navigation.querySelector('a').addEventListener('click', event => {
-    event.preventDefault();
-    panel.querySelector('.pm-showcase__body').scrollTo({top: 0, behavior: 'auto'});
-    triggers.find(trigger => trigger.getAttribute('aria-expanded') === 'true').focus({preventScroll: true});
+  links.forEach((link, index) => {
+    link.addEventListener('click', event => {
+      if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      event.preventDefault();
+      if (location.hash !== link.hash) history.pushState(history.state, '', link.hash);
+      goTo(index);
+    });
   });
+  function restoreRoute() {
+    const index = links.findIndex(link => link.hash === location.hash);
+    if (index >= 0) goTo(index);
+    else if (!location.hash) window.scrollTo({top: 0, behavior: 'instant'});
+  }
+  window.addEventListener('hashchange', restoreRoute);
+
+  function sync() {
+    syncFrame = 0;
+    const activeIndex = panels.findIndex(page => page.classList.contains('is-active'));
+    panels.forEach((page, index) => {
+      const active = index === activeIndex;
+      page.inert = !active;
+      page.setAttribute('aria-hidden', String(!active));
+    });
+    downloads.classList.toggle('is-reveal-ready', !reduced.matches);
+    downloads.classList.toggle('is-visible', downloads.classList.contains('is-active'));
+    const visible = activeIndex >= 0 && showcase.getBoundingClientRect().bottom > innerHeight && !document.hidden;
+    navigation.classList.toggle('is-visible', visible);
+    navigation.inert = !visible;
+    navigation.setAttribute('aria-hidden', String(!visible));
+    links.forEach((link, index) => {
+      if (index === activeIndex) link.setAttribute('aria-current', 'page');
+      else link.removeAttribute('aria-current');
+    });
+    if (activeIndex !== currentIndex) {
+      currentIndex = activeIndex;
+      if (activeIndex >= 0) {
+        const link = links[activeIndex];
+        const track = navigation.querySelector('.pm-showcase__nav-track');
+        track.scrollTo({left: link.offsetLeft - track.clientWidth / 2 + link.offsetWidth / 2, behavior: 'instant'});
+      }
+      // Keep known section URLs truthful when the user continues by scrolling.
+      if (links.some(link => link.hash === location.hash)) {
+        history.replaceState(history.state, '', activeIndex < 0 ? location.pathname + location.search : links[activeIndex].hash);
+      }
+    }
+  }
+  function scheduleSync() {
+    if (!syncFrame) syncFrame = requestAnimationFrame(sync);
+  }
+  const observer = new MutationObserver(scheduleSync);
+  panels.forEach(page => observer.observe(page, {attributes: true, attributeFilter: ['class']}));
+  window.addEventListener('scroll', scheduleSync, {passive: true});
+  window.addEventListener('resize', scheduleSync);
+  document.addEventListener('visibilitychange', scheduleSync);
+  reduced.addEventListener('change', scheduleSync);
+  window.addEventListener('pagehide', () => {
+    cancelAnimationFrame(syncFrame);
+    syncFrame = 0;
+  });
+  window.addEventListener('pageshow', scheduleSync);
   select(0);
-  syncEntrance();
+  if (links.some(link => link.hash === location.hash)) restoreRoute();
+  scheduleSync();
 }
