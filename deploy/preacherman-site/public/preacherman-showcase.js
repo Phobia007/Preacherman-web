@@ -1,40 +1,44 @@
 const showcase = document.querySelector('[data-combined-showcase]');
 if (showcase) {
   const panels = [...showcase.querySelectorAll('.showcase-sequence__panel')];
-  const panel = showcase.querySelector('.pm-showcase');
   const navigation = showcase.querySelector('.pm-showcase__nav');
   const links = [...navigation.querySelectorAll('a')];
-  const triggers = [...panel.querySelectorAll('[data-showcase-trigger]')];
-  const disclosures = [...panel.querySelectorAll('.pm-showcase__disclosure')];
-  const films = [...panel.querySelectorAll('[data-story-film]')];
   const downloads = showcase.querySelector('.statement-section');
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   let currentIndex = -1;
   let syncFrame = 0;
+  let initialRoutePending = links.some(link => link.hash === location.hash);
 
-  function select(index) {
-    triggers.forEach((trigger, i) => {
-      const selected = index === i;
-      trigger.setAttribute('aria-expanded', String(selected));
-      disclosures[i].setAttribute('aria-hidden', String(!selected));
-      disclosures[i].inert = !selected;
-      films[i].hidden = !selected;
-      films[i].inert = !selected;
+  // Each page keeps its own selected story and media slot.
+  for (const panel of showcase.querySelectorAll('.pm-showcase')) {
+    const triggers = [...panel.querySelectorAll('[data-showcase-trigger]')];
+    const disclosures = [...panel.querySelectorAll('.pm-showcase__disclosure')];
+    const films = [...panel.querySelectorAll('.pm-showcase__film')];
+    function select(index) {
+      triggers.forEach((trigger, i) => {
+        const selected = index === i;
+        trigger.setAttribute('aria-expanded', String(selected));
+        disclosures[i].setAttribute('aria-hidden', String(!selected));
+        disclosures[i].inert = !selected;
+        films[i].hidden = !selected;
+        films[i].inert = !selected;
+      });
+    }
+    triggers.forEach((trigger, index) => {
+      trigger.addEventListener('click', () => select(index));
+      trigger.addEventListener('keydown', event => {
+        let next;
+        if (event.key === 'ArrowDown') next = (index + 1) % triggers.length;
+        if (event.key === 'ArrowUp') next = (index + triggers.length - 1) % triggers.length;
+        if (event.key === 'Home') next = 0;
+        if (event.key === 'End') next = triggers.length - 1;
+        if (next === undefined) return;
+        event.preventDefault();
+        triggers[next].focus();
+      });
     });
+    select(0);
   }
-  triggers.forEach((trigger, index) => {
-    trigger.addEventListener('click', () => select(index));
-    trigger.addEventListener('keydown', event => {
-      let next;
-      if (event.key === 'ArrowDown') next = (index + 1) % triggers.length;
-      if (event.key === 'ArrowUp') next = (index + triggers.length - 1) % triggers.length;
-      if (event.key === 'Home') next = 0;
-      if (event.key === 'End') next = triggers.length - 1;
-      if (next === undefined) return;
-      event.preventDefault();
-      triggers[next].focus();
-    });
-  });
 
   // Match the canonical scroll controller's thresholds. Jumping the scroll
   // position lets that controller crossfade directly to the requested page.
@@ -84,7 +88,7 @@ if (showcase) {
         track.scrollTo({left: link.offsetLeft - track.clientWidth / 2 + link.offsetWidth / 2, behavior: 'instant'});
       }
       // Keep known section URLs truthful when the user continues by scrolling.
-      if (links.some(link => link.hash === location.hash)) {
+      if (!initialRoutePending && links.some(link => link.hash === location.hash)) {
         history.replaceState(history.state, '', activeIndex < 0 ? location.pathname + location.search : links[activeIndex].hash);
       }
     }
@@ -103,7 +107,18 @@ if (showcase) {
     syncFrame = 0;
   });
   window.addEventListener('pageshow', scheduleSync);
-  select(0);
-  if (links.some(link => link.hash === location.hash)) restoreRoute();
+  // Let native fragment positioning finish before applying our scroll sequence.
+  // A sticky panel's physical position is different from its route position.
+  if (initialRoutePending) {
+    const restoreInitialRoute = () => requestAnimationFrame(() => {
+      restoreRoute();
+      requestAnimationFrame(() => {
+        initialRoutePending = false;
+        scheduleSync();
+      });
+    });
+    if (document.readyState === 'complete') restoreInitialRoute();
+    else window.addEventListener('load', restoreInitialRoute, {once: true});
+  }
   scheduleSync();
 }

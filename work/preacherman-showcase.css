@@ -23,12 +23,12 @@
   top: calc(var(--site-header-height) + 14px);
   left: 50%;
   width: min(1312px, calc(100% - 2 * var(--page-gutter)));
-  padding: 4px;
-  border: 1px solid var(--hairline);
-  border-radius: 999px;
-  background: rgba(var(--page-rgb), .9);
-  box-shadow: 0 8px 28px rgba(var(--ink-rgb), .045);
-  backdrop-filter: blur(18px);
+  padding: 5px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
   opacity: 0;
   visibility: hidden;
   transform: translate(-50%, -84px);
@@ -60,18 +60,18 @@
   min-height: 42px;
   padding: 8px clamp(12px, 1.35vw, 25px);
   border: 0;
-  border-radius: 999px;
-  color: var(--ink);
+  border-radius: 0;
+  color: rgba(var(--ink-rgb), .72);
   background: transparent;
   font: inherit;
   font-size: 14px;
   line-height: 1.2;
   text-decoration: none;
   white-space: nowrap;
-  transition: background 200ms ease;
+  transition: color 200ms ease;
 }
-.pm-showcase__nav-item[aria-current] { background: rgba(var(--ink-rgb), .085); }
-a.pm-showcase__nav-item:hover { background: rgba(var(--ink-rgb), .13); }
+.pm-showcase__nav-item[aria-current],
+a.pm-showcase__nav-item:hover { color: var(--ink); }
 .pm-showcase__body {
   width: min(calc(1560px + 2 * var(--pm-showcase-spread)), calc(100% - 2 * var(--page-gutter) + 2 * var(--pm-showcase-spread)));
   min-height: 0;
@@ -174,7 +174,7 @@ a.pm-showcase__nav-item:hover { background: rgba(var(--ink-rgb), .13); }
   box-shadow: 0 14px 34px rgba(var(--ink-rgb), .055);
 }
 .pm-showcase.is-active .pm-showcase__media { opacity: 1; transform: none; }
-.showcase-sequence .pm-showcase__film[data-story-film] {
+.showcase-sequence .pm-showcase__film {
   position: absolute;
   inset: 0;
   border-radius: inherit;
@@ -201,6 +201,13 @@ body:is(.is-navigation-workspace-open, .is-navigation-locked, .is-login-panel-op
   .pm-showcase__nav-item { font-size: 13px; padding-inline: 16px; }
   .pm-showcase__grid { gap: calc(30px + 2 * var(--pm-showcase-spread)); }
 }
+/* Only Portfolio and Marketplace place media before copy on wide screens. */
+@media (min-width: 901px) {
+  :is(#portfolio, #marketplace) .pm-showcase__grid {
+    grid-template-columns: minmax(0, 1fr) minmax(340px, .4fr);
+  }
+  :is(#portfolio, #marketplace) .pm-showcase__media { order: -1; }
+}
 @media (max-width: 900px) {
   .pm-showcase__nav { top: calc(var(--site-header-height) + 12px); width: calc(100% - 32px); }
   .pm-showcase__nav-track { justify-content: flex-start; }
@@ -221,7 +228,7 @@ body:is(.is-navigation-workspace-open, .is-navigation-locked, .is-login-panel-op
 @media (prefers-reduced-motion: reduce) {
   .pm-showcase__nav, .pm-showcase__trigger, .pm-showcase__disclosure { transition: none; }
   .pm-showcase__nav { transform: translateX(-50%); }
-  .showcase-sequence .pm-showcase__film[data-story-film],
+  .showcase-sequence .pm-showcase__film,
   .pm-showcase__trigger[aria-expanded="true"] span { animation: none; }
 }
 

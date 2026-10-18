@@ -95,8 +95,33 @@ If the monolithic HTML is split in a later phase:
 
 ## Combined showcase and navigation (2026-10-17)
 
-`work/preacherman-showcase.js` and `.css` provide the four-story accordion and persistent capsule navigation. Preacherman, Portfolio, Autonomy, Marketplace, and Get Started share the existing sticky viewport and scroll-driven crossfade. Native wheel/touch scrolling, navigation clicks, and section hashes select the same panels. Portfolio, Autonomy, and Marketplace are intentionally empty; Get Started contains the original download section and controls.
+`work/preacherman-showcase.js` and `.css` provide the four-story accordion and persistent capsule navigation. Preacherman, Portfolio, Autonomy, Marketplace, and Get Started share the existing sticky viewport and scroll-driven crossfade. Native wheel/touch scrolling, navigation clicks, and section hashes select the same panels. Get Started contains the original download section and controls.
 
 The capsule drops immediately from below the site header when entering the sequence, remains visible between destinations, and highlights the current page. On entering Preacherman, copy fades in and the video frame slides from the right. Reduced motion removes these movements. Appearance and typography use the site's existing tokens. The films controller plays only the visible, selected film.
 
 The four story descriptions use the user-approved Chinese copy and corresponding English translations (2026-10-17), connected to the existing language preference. The third title is Your asset. Centered cover cropping and video controls are retained. Description links and the old standalone heading remain removed. Public publishing continues through a separately requested push to main and the existing Cloudflare integration.
+
+
+## Portfolio (2026-10-18)
+
+Portfolio reuses the Preacherman two-column layout, typography, accordion, entrance motion, and responsive treatment. Rediscover, Assemble, and Publish have the approved Chinese descriptions and corresponding English translations in the existing language dictionary. Each page retains its own selected item. The three Portfolio media slots are intentionally empty, with no playback controls or video requests, until the user supplies their films. The first page’s four films retain their existing behavior.
+
+
+## Autonomy (2026-10-18)
+
+Autonomy uses the same shared layout and independent accordion as Portfolio: Perspective, Learning, and Individuality pair the user-provided Chinese copy with English translations in the existing language dictionary. The three media slots remain empty until video assets are provided. Shared appearance tokens, mobile layout, keyboard navigation, and entrance motion apply without section-specific overrides.
+
+
+## Marketplace (2026-10-18)
+
+Marketplace reuses the shared two-column layout and independent accordion for Collect, Create and Sell, and Exchange. The user-provided Chinese descriptions and English translations follow the site language preference; Exchange retains its future-facing wording, and Create and Sell retains the authorization boundary. The media slots remain empty pending video assets. Typography, appearance, responsive layout, keyboard controls, and entrance motion match Portfolio and Autonomy.
+
+
+## Portfolio and Marketplace column order (2026-10-18)
+
+At viewport widths of 901px and above, only Portfolio and Marketplace place the video frame on the left and the accordion copy on the right. Their original video/text widths and gap are retained by reversing the two grid tracks. Preacherman and Autonomy retain copy on the left. At 900px and below, the existing video-above-copy layout remains unchanged for every section.
+
+
+## Text-only section navigation (2026-10-18)
+
+The five section links retain their positioning, drop-in entrance, click targets, horizontal mobile scrolling, and keyboard focus indicators. The surrounding capsule border, fill, shadow, and backdrop blur are removed, along with selected/hover pill fills. Current and hovered sections use the primary text color; other links use a muted theme-derived color.
