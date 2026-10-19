@@ -7,18 +7,21 @@ const authoredFilms = {
   '03': '/assets/films/your-property-23s',
   '04': '/assets/films/continuity-28s',
   rediscover: '/assets/films/rediscover-1280x800',
+  assemble: '/assets/films/assemble-1280x800',
 };
 const descriptions = {
   en: ['Vessel Your Intelligence — Preacherman Gallery film.',
     'State and engine decoupled — Settings, Execution Mode, and local agents.',
     'Your asset — digital humans, appearance, settings, API access and task lists.',
     'Continuity — your identity, memory and history persist beyond any single model.',
-    'Rediscover — revisit past materials and ideas, and put them to work again.'],
+    'Rediscover — revisit past materials and ideas, and put them to work again.',
+    'Assemble — combine past research, materials and tools to start a new task.'],
   zh: ['圈地自“营” — Preacherman Gallery 展示影片。',
     '状态与引擎解耦 — 设置、执行模式与本地智能体。',
     '你的资产 — Gallery、数字身份与 Market 资产管理。',
     '持续延续 — 你的身份、记忆与历史，超越任何单一模型而持续存在。',
-    'Rediscover — 找回过去的内容和思路，换个方向，接着做。'],
+    'Rediscover — 找回过去的内容和思路，换个方向，接着做。',
+    'Assemble — 组合过往的调研资料与工具，开展新的任务。'],
 };
 let suspended = false;
 const theme = () => root.classList.contains('is-night-theme') ? 'dark' : 'light';

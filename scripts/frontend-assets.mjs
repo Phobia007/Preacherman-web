@@ -1,5 +1,8 @@
 // Explicit publish allowlist: source paths relative to the repository root.
 export const frontendAssets = [
+  ["work/assets/films/assemble-1280x800.mp4", "assets/films/assemble-1280x800.mp4"],
+  ["work/assets/films/assemble-1280x800-start.webp", "assets/films/assemble-1280x800-start.webp"],
+  ["work/assets/films/assemble-1280x800-end.webp", "assets/films/assemble-1280x800-end.webp"],
   ["work/assets/films/rediscover-1280x800.mp4", "assets/films/rediscover-1280x800.mp4"],
   ["work/assets/films/rediscover-1280x800-start.webp", "assets/films/rediscover-1280x800-start.webp"],
   ["work/assets/films/rediscover-1280x800-end.webp", "assets/films/rediscover-1280x800-end.webp"],
